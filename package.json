@@ -1,0 +1,19 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "Task Manager",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CosmoS1X/fullstack-javascript-project-6.git"
+  },
+  "author": "Konstantin Korovin <cosmo.stan@yandex.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CosmoS1X/fullstack-javascript-project-6/issues"
+  },
+  "homepage": "https://github.com/CosmoS1X/fullstack-javascript-project-6#readme"
+}
