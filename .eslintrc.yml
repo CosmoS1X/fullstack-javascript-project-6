@@ -1,0 +1,27 @@
+root: true
+env:
+  browser: true
+  node: true
+  jest: true
+extends:
+  - airbnb-base
+  - plugin:jest/recommended
+parserOptions:
+  ecmaVersion: latest
+rules:
+  no-console: off
+  import/extensions: off
+  no-underscore-dangle:
+    - error
+    - allow:
+      - __filename
+      - __dirname
+  new-cap:
+    - error
+    - properties: false
+  no-param-reassign:
+    - error
+    - props: true
+      ignorePropertyModificationsFor:
+      - req
+      - reply
