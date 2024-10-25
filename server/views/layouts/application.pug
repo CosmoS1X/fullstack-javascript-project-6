@@ -3,22 +3,20 @@ include ../mixins/forms.pug
 doctype html
 html(lang="en")
   head
-    title Hexlet Fastify Boilerplate
+    title Hexlet Task Manager
     script(src=assetPath('main.js'))
     link(href=assetPath('main.css') rel="stylesheet")
     meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
-  body.d-flex.flex-column.min-vh-100
-    nav.navbar.navbar-expand-lg.navbar-light.bg-light.mb-3
-      .container-fluid
+  body.d-flex.flex-column.min-vh-100.bg-light
+    nav.navbar.navbar-expand-lg.navbar-light.bg-white
+      .container
         a.navbar-brand(href=route('root'))= t('appName')
         button.navbar-toggler(data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent")
           span.navbar-toggler-icon
         .collapse.navbar-collapse(id="navbarToggleExternalContent")
-          .container-fluid
-            ul.navbar-nav.mr-auto
-              li.nav-item
-                a.nav-link(href=route('users'))= t('layouts.application.users')
-          ul.navbar-nav
+          ul.navbar-nav.justify-content-end.w-100
+            li.nav-item.me-auto
+              a.nav-link(href=route('users'))= t('layouts.application.users')
             if isAuthenticated()
               li.nav-item
                 +buttonTo(route('session'), 'delete')(class="btn nav-link" value=t('layouts.application.signOut'))
@@ -33,10 +31,10 @@ html(lang="en")
         each message in messages
           div.alert(class=`alert-${getAlertClass(type)}`)= message
 
-      h1.my-4
+      h1.display-4.fw-bold.mt-4
         block header
       block content
 
-    footer
-      .container.my-5.pt-4.border-top
-        a(target="_blank" href="https://ru.hexlet.io") Hexlet
+    footer.bg-dark.text-light
+      .container.py-3
+        p.lead.mb-0 &copy; #[a.link-light.text-decoration-none(href='https://github.com/CosmoS1X') Cosmo], 2024
