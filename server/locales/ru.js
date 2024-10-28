@@ -1,5 +1,3 @@
-// @ts-check
-
 export default {
   translation: {
     appName: 'Менеджер задач',
@@ -27,6 +25,11 @@ export default {
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
+        editUser: 'Изменение пользователя',
+        buttons: {
+          change: 'Изменить',
+          delete: 'Удалить',
+        },
       },
     },
     views: {
@@ -38,8 +41,10 @@ export default {
       },
       users: {
         id: 'ID',
+        fullName: 'Полное имя',
         email: 'Email',
         createdAt: 'Дата создания',
+        actions: 'Действия',
         new: {
           firstName: 'Имя',
           lastName: 'Фамилия',

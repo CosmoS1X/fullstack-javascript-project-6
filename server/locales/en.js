@@ -1,5 +1,3 @@
-// @ts-check
-
 export default {
   translation: {
     appName: 'Task Manager',
@@ -27,6 +25,11 @@ export default {
         signIn: 'Login',
         signUp: 'Register',
         signOut: 'Logout',
+        editUser: 'Edit user',
+        buttons: {
+          change: 'Change',
+          delete: 'Delete',
+        },
       },
     },
     views: {
@@ -38,8 +41,10 @@ export default {
       },
       users: {
         id: 'ID',
+        fullName: 'Full name',
         email: 'Email',
         createdAt: 'Created at',
+        actions: 'Actions',
         new: {
           firstName: 'Name',
           lastName: 'Surname',
