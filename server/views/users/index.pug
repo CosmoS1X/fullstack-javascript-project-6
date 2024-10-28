@@ -1,15 +1,28 @@
 extends ../layouts/application.pug
 
+block header 
+  = t('layouts.application.users')
+
 block content
-  table.table.table-striped
-    thead
-      tr
-        th= t('views.users.id')
-        th= t('views.users.email')
-        th= t('views.users.createdAt')
-    tbody
-      each user in users
+  .table-responsive
+    table.table.table-borderless.table-striped.mt-5.bg-white
+      thead
         tr
-          td= user.id
-          td= user.email
-          td= formatDate(user.createdAt)
+          th= t('views.users.id')
+          th= t('views.users.fullName')
+          th= t('views.users.email')
+          th= t('views.users.createdAt')
+          th= t('views.users.actions')
+      tbody
+        each user in users
+          tr
+            td #{user.id}
+            td #{user.first_name} #{user.last_name}
+            td #{user.email}
+            td #{formatDate(user.created_at)}
+            td 
+              .d-flex.flex-wrap
+                a.btn.btn-primary.me-1(href=`/users/${user.id}/edit`)= t('layouts.application.buttons.change')
+                form(action=`/users/${user.id}` method='post')
+                  input(name='_method' type='hidden' value='delete')
+                  input.btn.btn-danger(type='submit' value= t('layouts.application.buttons.delete'))
