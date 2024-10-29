@@ -13,8 +13,16 @@ export default {
       },
       users: {
         create: {
-          error: 'Failed to register',
           success: 'User registered successfully',
+          error: 'Failed to register',
+        },
+        edit: {
+          success: 'User edited successfully',
+          error: 'Failed to edit',
+        },
+        delete: {
+          success: 'User deleted successfully',
+          error: 'Failed to delete',
         },
       },
       authError: 'Access denied! Please login',
