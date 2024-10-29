@@ -17,9 +17,9 @@ block content
         each user in users
           tr
             td #{user.id}
-            td #{user.first_name} #{user.last_name}
+            td #{user.firstName} #{user.lastName}
             td #{user.email}
-            td #{formatDate(user.created_at)}
+            td #{formatDate(user.createdAt)}
             td 
               .d-flex.flex-wrap
                 a.btn.btn-primary.me-1(href=`/users/${user.id}/edit`)= t('layouts.application.buttons.change')
