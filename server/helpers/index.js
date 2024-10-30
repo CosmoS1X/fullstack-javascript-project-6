@@ -3,13 +3,6 @@
 import i18next from 'i18next';
 import _ from 'lodash';
 
-export const keysToCamelCase = (obj) => Object.fromEntries(
-  Object.entries(obj).map(([key, value]) => [
-    key.replace(/_([a-z])/g, (_substr, char) => char.toUpperCase()),
-    value,
-  ]),
-);
-
 export default (app) => ({
   route(name) {
     return app.reverse(name);
@@ -20,8 +13,6 @@ export default (app) => ({
   _,
   getAlertClass(type) {
     switch (type) {
-      // case 'failure':
-      //   return 'danger';
       case 'error':
         return 'danger';
       case 'success':
