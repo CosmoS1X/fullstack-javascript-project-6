@@ -16,10 +16,10 @@ block content
       tbody
         each user in users
           tr
-            td #{user.id}
-            td #{user.firstName} #{user.lastName}
-            td #{user.email}
-            td #{formatDate(user.createdAt)}
+            td= user.id
+            td= user.fullName()
+            td= user.email
+            td= formatDate(user.createdAt)
             td 
               .d-flex.flex-wrap
                 a.btn.btn-primary.me-1(href=`/users/${user.id}/edit`)= t('layouts.application.buttons.change')
