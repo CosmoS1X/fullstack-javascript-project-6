@@ -9,7 +9,7 @@ block content
       .card.shadow-sm
         .card-body.row.p-5
           .col-12.col-md-6.d-flex.align-items-center.justify-content-center
-            img.rounded-circle(src='/assets/avatar.jpg', alt='avatar')
+            img.rounded-circle(src='/assets/avatar.jpg')
           .col-12.col-md-6.mt-3.mt-mb-0
             +formFor()(action=route('users') method='post')
               +input(user, 'firstName', errors)(type='text')
