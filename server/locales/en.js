@@ -19,10 +19,12 @@ export default {
         edit: {
           success: 'User edited successfully',
           error: 'Failed to edit',
+          reject: 'Вы не можете редактировать другого пользователя',
         },
         delete: {
           success: 'User deleted successfully',
           error: 'Failed to delete',
+          reject: 'Вы не можете удалять другого пользователя',
         },
       },
       authError: 'Access denied! Please login',
