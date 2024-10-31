@@ -46,10 +46,18 @@ export default (app) => {
   });
 
   // user editing form
-  app.get('/users/:id/edit', { name: 'editUser' }, async (req, reply) => {
+  app.get('/users/:id/edit', {
+    name: 'editUser',
+    preValidation: app.authenticate,
+  }, async (req, reply) => {
     const user = await models.user.query().findById(req.params.id);
 
-    reply.render('users/edit', { user });
+    if (req.session.passport.id !== user.id) {
+      req.flash('error', i18next.t('flash.users.edit.reject'));
+      reply.redirect(app.reverse('root'));
+    } else {
+      reply.render('users/edit', { user });
+    }
 
     return reply;
   });
@@ -72,10 +80,18 @@ export default (app) => {
   });
 
   // delete user
-  app.delete('/users/:id', async (req, reply) => {
+  app.delete('/users/:id', { preValidation: app.authenticate }, async (req, reply) => {
+    if (req.session.passport.id !== Number(req.params.id)) {
+      req.flash('error', i18next.t('flash.users.delete.reject'));
+      reply.redirect(app.reverse('root'));
+
+      return reply;
+    }
+
     try {
       await models.user.query().deleteById(req.params.id);
 
+      req.logOut();
       req.flash('success', i18next.t('flash.users.delete.success'));
       reply.redirect(app.reverse('users'));
     } catch (error) {
