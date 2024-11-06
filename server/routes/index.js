@@ -4,10 +4,10 @@ import welcome from './welcome.js';
 import users from './users.js';
 import session from './session.js';
 
-const controllers = [
+const routes = [
   welcome,
   users,
   session,
 ];
 
-export default (app) => controllers.forEach((f) => f(app));
+export default (app) => routes.forEach((f) => f(app));
