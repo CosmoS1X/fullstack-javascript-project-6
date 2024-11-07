@@ -1,0 +1,26 @@
+extends ../layouts/application.pug
+
+block header 
+  = t('layouts.headers.statuses')
+
+block content 
+  a.btn.btn-primary(href='/statuses/new')= t('layouts.buttons.createStatus')
+  .table-responsive 
+    table.table.table-borderless.table-striped.mt-5.bg-white
+      thead 
+        tr 
+          th.py-3= t('layouts.tableFields.id')
+          th.py-3= t('layouts.tableFields.name')
+          th.py-3= t('layouts.tableFields.createdAt')
+          th.py-3= t('layouts.tableFields.actions')
+      tbody 
+        each status in statuses 
+            td= status.id
+            td= status.statusName
+            td= formatDate(status.createdAt)
+            td
+              .d-flex
+                a.btn.btn-primary.me-1(href=`/statuses/${status.id}/edit`)= t('layouts.buttons.change')
+                form(action=`/statuses/${status.id}` method='post')
+                  input(name='_method' type='hidden' value='delete')
+                  input.btn.btn-danger(type='submit' value= t('layouts.buttons.delete'))
