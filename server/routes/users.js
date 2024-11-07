@@ -7,6 +7,6 @@ export default (app) => {
   app.get('/users/new', { name: 'newUser' }, controller.getCreateForm);
   app.post('/users', controller.create);
   app.get('/users/:id/edit', { name: 'editUser', preValidation: app.authenticate }, controller.getUpdateForm);
-  app.patch('/users/:id', controller.update);
+  app.patch('/users/:id', { preValidation: app.authenticate }, controller.update);
   app.delete('/users/:id', { preValidation: app.authenticate }, controller.delete);
 };
