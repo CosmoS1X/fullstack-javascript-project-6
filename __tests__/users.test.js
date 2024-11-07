@@ -67,20 +67,36 @@ describe('test users CRUD', () => {
   });
 
   it('update', async () => {
-    const userId = 1;
+    const { email } = testData.users.existing;
     const params = testData.users.new;
+    const user = await models.user.query().findOne({ email });
+
+    const responseSignIn = await app.inject({
+      method: 'POST',
+      url: '/session',
+      payload: {
+        data: testData.users.existing,
+      },
+    });
+
+    expect(responseSignIn.statusCode).toBe(302);
+
+    const [sessionCookie] = responseSignIn.cookies;
+    const { name, value } = sessionCookie;
+    const cookie = { [name]: value };
 
     const response = await app.inject({
       method: 'PATCH',
-      url: `/users/${userId}`,
+      url: `/users/${user.id}`,
       payload: {
         data: params,
       },
+      cookies: cookie,
     });
 
     expect(response.statusCode).toBe(302);
 
-    const updated = await models.user.query().findById(userId);
+    const updated = await models.user.query().findById(user.id);
 
     const expected = {
       ..._.omit(params, 'password'),
@@ -93,7 +109,7 @@ describe('test users CRUD', () => {
   it('delete', async () => {
     const { email } = testData.users.existing;
 
-    const responseLogIn = await app.inject({
+    const responseSignIn = await app.inject({
       method: 'POST',
       url: '/session',
       payload: {
@@ -101,9 +117,9 @@ describe('test users CRUD', () => {
       },
     });
 
-    expect(responseLogIn.statusCode).toBe(302);
+    expect(responseSignIn.statusCode).toBe(302);
 
-    const [sessionCookie] = responseLogIn.cookies;
+    const [sessionCookie] = responseSignIn.cookies;
     const { name, value } = sessionCookie;
     const cookie = { [name]: value };
 
