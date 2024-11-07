@@ -1,8 +1,6 @@
-// @ts-check
-
 export default {
   translation: {
-    appName: 'Fastify Шаблон',
+    appName: 'Менеджер задач',
     flash: {
       session: {
         create: {
@@ -15,8 +13,18 @@ export default {
       },
       users: {
         create: {
-          error: 'Не удалось зарегистрировать',
           success: 'Пользователь успешно зарегистрирован',
+          error: 'Не удалось зарегистрировать',
+        },
+        edit: {
+          success: 'Пользователь успешно изменён',
+          error: 'Не удалось изменить пользователя',
+          reject: 'Вы не можете редактировать другого пользователя',
+        },
+        delete: {
+          success: 'Пользователь успешно удален',
+          error: 'Не удалось удалить пользователя',
+          reject: 'Вы не можете удалять другого пользователя',
         },
       },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
@@ -27,6 +35,11 @@ export default {
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
+        editUser: 'Изменение пользователя',
+        buttons: {
+          change: 'Изменить',
+          delete: 'Удалить',
+        },
       },
     },
     views: {
@@ -38,9 +51,15 @@ export default {
       },
       users: {
         id: 'ID',
+        fullName: 'Полное имя',
         email: 'Email',
         createdAt: 'Дата создания',
+        actions: 'Действия',
         new: {
+          firstName: 'Имя',
+          lastName: 'Фамилия',
+          email: 'Email',
+          password: 'Пароль',
           submit: 'Сохранить',
           signUp: 'Регистрация',
         },

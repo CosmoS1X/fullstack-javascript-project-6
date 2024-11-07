@@ -1,32 +1,12 @@
-// @ts-check
-
-import i18next from 'i18next';
+import userController from '../controllers/userController.js';
 
 export default (app) => {
-  app
-    .get('/users', { name: 'users' }, async (req, reply) => {
-      const users = await app.objection.models.user.query();
-      reply.render('users/index', { users });
-      return reply;
-    })
-    .get('/users/new', { name: 'newUser' }, (req, reply) => {
-      const user = new app.objection.models.user();
-      reply.render('users/new', { user });
-    })
-    .post('/users', async (req, reply) => {
-      const user = new app.objection.models.user();
-      user.$set(req.body.data);
+  const controller = userController(app);
 
-      try {
-        const validUser = await app.objection.models.user.fromJson(req.body.data);
-        await app.objection.models.user.query().insert(validUser);
-        req.flash('info', i18next.t('flash.users.create.success'));
-        reply.redirect(app.reverse('root'));
-      } catch ({ data }) {
-        req.flash('error', i18next.t('flash.users.create.error'));
-        reply.render('users/new', { user, errors: data });
-      }
-
-      return reply;
-    });
+  app.get('/users', { name: 'users' }, controller.getList);
+  app.get('/users/new', { name: 'newUser' }, controller.getCreateForm);
+  app.post('/users', controller.create);
+  app.get('/users/:id/edit', { name: 'editUser', preValidation: app.authenticate }, controller.getUpdateForm);
+  app.patch('/users/:id', { preValidation: app.authenticate }, controller.update);
+  app.delete('/users/:id', { preValidation: app.authenticate }, controller.delete);
 };

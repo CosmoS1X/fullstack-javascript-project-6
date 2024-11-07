@@ -1,8 +1,6 @@
-// @ts-check
-
 export default {
   translation: {
-    appName: 'Fastify Boilerplate',
+    appName: 'Task Manager',
     flash: {
       session: {
         create: {
@@ -15,8 +13,18 @@ export default {
       },
       users: {
         create: {
-          error: 'Failed to register',
           success: 'User registered successfully',
+          error: 'Failed to register',
+        },
+        edit: {
+          success: 'User edited successfully',
+          error: 'Failed to edit',
+          reject: 'You cannot edit another user',
+        },
+        delete: {
+          success: 'User deleted successfully',
+          error: 'Failed to delete',
+          reject: 'You cannot delete another user',
         },
       },
       authError: 'Access denied! Please login',
@@ -27,6 +35,11 @@ export default {
         signIn: 'Login',
         signUp: 'Register',
         signOut: 'Logout',
+        editUser: 'Edit user',
+        buttons: {
+          change: 'Change',
+          delete: 'Delete',
+        },
       },
     },
     views: {
@@ -38,9 +51,15 @@ export default {
       },
       users: {
         id: 'ID',
+        fullName: 'Full name',
         email: 'Email',
         createdAt: 'Created at',
+        actions: 'Actions',
         new: {
+          firstName: 'Name',
+          lastName: 'Surname',
+          email: 'Email',
+          password: 'Password',
           submit: 'Register',
           signUp: 'Register',
         },
