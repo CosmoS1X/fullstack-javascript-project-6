@@ -15,13 +15,13 @@ mixin input(entity, propertyName, errors = {})
       name=getInputName(propertyName)
       class=classLine
       value=_.get(entity, propertyName, '')
-      placeholder = t(`views.users.new.${propertyName}`)
+      placeholder = t(`layouts.application.inputs.${propertyName}`)
     )&attributes(attributes)
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
     label(
       for= inputId
-    )= t(`views.users.new.${propertyName}`)
+    )= t(`layouts.inputs.${propertyName}`)
 
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
