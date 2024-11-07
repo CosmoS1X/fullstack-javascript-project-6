@@ -30,40 +30,46 @@ export default {
       authError: 'Access denied! Please login',
     },
     layouts: {
-      application: {
+      navbar: {
         users: 'Users',
+        statuses: 'Statuses',
         signIn: 'Login',
         signUp: 'Register',
         signOut: 'Logout',
+      },
+      headers: {
+        users: 'Users',
+        signUp: 'Register',
+        signIn: 'Login',
         editUser: 'Edit user',
-        buttons: {
-          change: 'Change',
-          delete: 'Delete',
-        },
+        statuses: 'Statuses',
+        statusCreation: 'Creating status',
       },
-    },
-    views: {
-      session: {
-        new: {
-          signIn: 'Login',
-          submit: 'Login',
-        },
+      buttons: {
+        login: 'Login',
+        save: 'Save',
+        change: 'Change',
+        delete: 'Delete',
+        create: 'Create',
+        createStatus: 'Create status',
       },
-      users: {
+      inputs: {
+        firstName: 'First Name',
+        lastName: 'Last Name',
+        email: 'Email',
+        password: 'Password',
+        name: 'Name',
+      },
+      tableFields: {
         id: 'ID',
         fullName: 'Full name',
         email: 'Email',
+        name: 'Name',
         createdAt: 'Created at',
         actions: 'Actions',
-        new: {
-          firstName: 'Name',
-          lastName: 'Surname',
-          email: 'Email',
-          password: 'Password',
-          submit: 'Register',
-          signUp: 'Register',
-        },
       },
+    },
+    views: {
       welcome: {
         index: {
           hello: 'Hello from Hexlet!',

@@ -30,40 +30,46 @@ export default {
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
     },
     layouts: {
-      application: {
+      navbar: {
         users: 'Пользователи',
+        statuses: 'Статусы',
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
+      },
+      headers: {
+        users: 'Пользователи',
+        signUp: 'Регистрация',
+        signIn: 'Вход',
         editUser: 'Изменение пользователя',
-        buttons: {
-          change: 'Изменить',
-          delete: 'Удалить',
-        },
+        statuses: 'Статусы',
+        statusCreation: 'Создание статуса',
       },
-    },
-    views: {
-      session: {
-        new: {
-          signIn: 'Вход',
-          submit: 'Войти',
-        },
+      buttons: {
+        login: 'Войти',
+        save: 'Сохранить',
+        change: 'Изменить',
+        delete: 'Удалить',
+        create: 'Создать',
+        createStatus: 'Создать статус',
       },
-      users: {
+      inputs: {
+        firstName: 'Имя',
+        lastName: 'Фамилия',
+        email: 'Email',
+        password: 'Пароль',
+        name: 'Наименование',
+      },
+      tableFields: {
         id: 'ID',
         fullName: 'Полное имя',
         email: 'Email',
+        name: 'Наименование',
         createdAt: 'Дата создания',
         actions: 'Действия',
-        new: {
-          firstName: 'Имя',
-          lastName: 'Фамилия',
-          email: 'Email',
-          password: 'Пароль',
-          submit: 'Сохранить',
-          signUp: 'Регистрация',
-        },
       },
+    },
+    views: {
       welcome: {
         index: {
           hello: 'Привет от Хекслета!',
