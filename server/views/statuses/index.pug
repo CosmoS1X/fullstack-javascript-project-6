@@ -15,8 +15,9 @@ block content
           th.py-3= t('layouts.tableFields.actions')
       tbody 
         each status in statuses 
+          tr
             td= status.id
-            td= status.statusName
+            td= status.name
             td= formatDate(status.createdAt)
             td
               .d-flex
