@@ -27,6 +27,20 @@ export default {
           reject: 'You cannot delete another user',
         },
       },
+      statuses: {
+        create: {
+          success: 'Status successfully created',
+          error: 'Failed to create status',
+        },
+        edit: {
+          success: 'Status successfully changed',
+          error: 'Failed to change status',
+        },
+        delete: {
+          success: 'Status successfully deleted',
+          error: 'Failed to delete status',
+        },
+      },
       authError: 'Access denied! Please login',
     },
     layouts: {
@@ -42,6 +56,7 @@ export default {
         signUp: 'Register',
         signIn: 'Login',
         editUser: 'Edit user',
+        editStatus: 'Edit status',
         statuses: 'Statuses',
         statusCreation: 'Creating status',
       },
