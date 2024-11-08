@@ -8,6 +8,8 @@ describe('test users CRUD', () => {
   let app;
   let knex;
   let models;
+  let cookie;
+
   const testData = getTestData();
 
   beforeAll(async () => {
@@ -15,7 +17,9 @@ describe('test users CRUD', () => {
       exposeHeadRoutes: false,
       logger: { target: 'pino-pretty' },
     });
+
     await init(app);
+
     knex = app.objection.knex;
     models = app.objection.models;
   });
@@ -23,6 +27,19 @@ describe('test users CRUD', () => {
   beforeEach(async () => {
     await knex.migrate.latest();
     await prepareData(app);
+
+    const responseSignIn = await app.inject({
+      method: 'POST',
+      url: '/session',
+      payload: {
+        data: testData.users.existing,
+      },
+    });
+
+    const [sessionCookie] = responseSignIn.cookies;
+    const { name, value } = sessionCookie;
+
+    cookie = { [name]: value };
   });
 
   it('index', async () => {
@@ -71,20 +88,6 @@ describe('test users CRUD', () => {
     const params = testData.users.new;
     const user = await models.user.query().findOne({ email });
 
-    const responseSignIn = await app.inject({
-      method: 'POST',
-      url: '/session',
-      payload: {
-        data: testData.users.existing,
-      },
-    });
-
-    expect(responseSignIn.statusCode).toBe(302);
-
-    const [sessionCookie] = responseSignIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
-
     const response = await app.inject({
       method: 'PATCH',
       url: `/users/${user.id}`,
@@ -108,20 +111,6 @@ describe('test users CRUD', () => {
 
   it('delete', async () => {
     const { email } = testData.users.existing;
-
-    const responseSignIn = await app.inject({
-      method: 'POST',
-      url: '/session',
-      payload: {
-        data: testData.users.existing,
-      },
-    });
-
-    expect(responseSignIn.statusCode).toBe(302);
-
-    const [sessionCookie] = responseSignIn.cookies;
-    const { name, value } = sessionCookie;
-    const cookie = { [name]: value };
 
     const user = await models.user.query().findOne({ email });
 
