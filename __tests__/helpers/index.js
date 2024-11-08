@@ -19,20 +19,38 @@ const usersTestData = {
   existing: createRandomUser(),
 };
 
+const createRandomStatus = () => ({
+  name: faker.lorem.word(),
+});
+
+const statusesTestData = {
+  new: createRandomStatus(),
+  existing: createRandomStatus(),
+};
+
 const getUsersModelData = () => {
   const users = faker.helpers.multiple(createRandomUser, { count: 2 });
 
   return [...users, usersTestData.existing].map((user) => encryptPassword(user));
 };
 
+const getStatusesModelData = () => {
+  const statuses = faker.helpers.multiple(createRandomStatus, { count: 3 });
+
+  return [...statuses, statusesTestData.existing];
+};
+
 const usersModelData = getUsersModelData();
+const statusesModelData = getStatusesModelData();
 
 export const getTestData = () => ({
   users: usersTestData,
+  statuses: statusesTestData,
 });
 
 export const prepareData = async (app) => {
   const { knex } = app.objection;
 
   await knex('users').insert(usersModelData);
+  await knex('statuses').insert(statusesModelData);
 };
