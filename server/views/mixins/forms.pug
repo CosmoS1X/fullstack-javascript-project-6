@@ -15,7 +15,7 @@ mixin input(entity, propertyName, errors = {})
       name=getInputName(propertyName)
       class=classLine
       value=_.get(entity, propertyName, '')
-      placeholder = t(`layouts.application.inputs.${propertyName}`)
+      placeholder = t(`layouts.inputs.${propertyName}`)
     )&attributes(attributes)
     if !_.isEmpty(propertyErrors)
       .invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
