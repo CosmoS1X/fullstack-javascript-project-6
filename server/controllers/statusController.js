@@ -4,21 +4,21 @@ export default (app) => {
   const { models } = app.objection;
 
   return {
-    getList: async (req, reply) => {
+    renderStatusList: async (req, reply) => {
       const statuses = await models.taskStatus.query();
 
       reply.render('statuses/index', { statuses });
 
       return reply;
     },
-    getCreateForm: (req, reply) => {
+    renderStatusCreateForm: (req, reply) => {
       const status = new models.taskStatus();
 
       reply.render('statuses/new', { status });
 
       return reply;
     },
-    create: async (req, reply) => {
+    createStatus: async (req, reply) => {
       const { data } = req.body;
       const status = new models.taskStatus();
 
@@ -38,14 +38,14 @@ export default (app) => {
 
       return reply;
     },
-    getUpdateForm: async (req, reply) => {
+    renderStatusUpdateForm: async (req, reply) => {
       const status = await models.taskStatus.query().findById(req.params.id);
 
       reply.render('statuses/edit', { status });
 
       return reply;
     },
-    update: async (req, reply) => {
+    updateStatus: async (req, reply) => {
       const status = await models.taskStatus.query().findById(req.params.id);
 
       try {
@@ -60,7 +60,7 @@ export default (app) => {
 
       return reply;
     },
-    delete: async (req, reply) => {
+    deleteStatus: async (req, reply) => {
       try {
         await models.taskStatus.query().deleteById(req.params.id);
 
