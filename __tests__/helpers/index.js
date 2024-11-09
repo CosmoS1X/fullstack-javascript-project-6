@@ -52,5 +52,5 @@ export const prepareData = async (app) => {
   const { knex } = app.objection;
 
   await knex('users').insert(usersModelData);
-  await knex('statuses').insert(statusesModelData);
+  await knex('task_statuses').insert(statusesModelData);
 };

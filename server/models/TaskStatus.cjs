@@ -5,7 +5,7 @@ const unique = objectionUnique({ fields: ['name'] });
 
 module.exports = class TaskStatus extends unique(BaseModel) {
   static get tableName() {
-    return 'statuses';
+    return 'task_statuses';
   }
 
   static get jsonSchema() {
