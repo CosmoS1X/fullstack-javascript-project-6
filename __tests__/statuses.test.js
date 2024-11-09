@@ -40,7 +40,7 @@ describe('test statuses CRUD', () => {
     cookie = { [name]: value };
   });
 
-  it('index', async () => {
+  it('should render statuses page', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('statuses'),
@@ -50,7 +50,7 @@ describe('test statuses CRUD', () => {
     expect(response.statusCode).toBe(200);
   });
 
-  it('new', async () => {
+  it('should render status creation page', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('newStatus'),
@@ -60,7 +60,20 @@ describe('test statuses CRUD', () => {
     expect(response.statusCode).toBe(200);
   });
 
-  it('create', async () => {
+  it('should render status update page', async () => {
+    const { name } = testData.statuses.existing;
+    const status = await models.taskStatus.query().findOne({ name });
+
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('editStatus', { id: status.id }),
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  it('should create status', async () => {
     const formData = testData.statuses.new;
 
     const response = await app.inject({
@@ -79,7 +92,7 @@ describe('test statuses CRUD', () => {
     expect(status).toMatchObject(formData);
   });
 
-  it('update', async () => {
+  it('should update status', async () => {
     const { name } = testData.statuses.existing;
     const formData = testData.statuses.new;
     const status = await models.taskStatus.query().findOne({ name });
@@ -100,7 +113,7 @@ describe('test statuses CRUD', () => {
     expect(updated).toMatchObject(formData);
   });
 
-  it('delete', async () => {
+  it('should delete status', async () => {
     const { name } = testData.statuses.existing;
     const status = await models.taskStatus.query().findOne({ name });
 

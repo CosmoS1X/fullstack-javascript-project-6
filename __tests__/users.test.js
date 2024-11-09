@@ -42,7 +42,7 @@ describe('test users CRUD', () => {
     cookie = { [name]: value };
   });
 
-  it('index', async () => {
+  it('should render users page', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('users'),
@@ -51,7 +51,7 @@ describe('test users CRUD', () => {
     expect(response.statusCode).toBe(200);
   });
 
-  it('new', async () => {
+  it('should render user creation page', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('newUser'),
@@ -60,39 +60,52 @@ describe('test users CRUD', () => {
     expect(response.statusCode).toBe(200);
   });
 
-  it('create', async () => {
-    const params = testData.users.new;
+  it('should render user update page', async () => {
+    const { email } = testData.users.existing;
+    const user = await models.user.query().findOne({ email });
+
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('editUser', { id: user.id }),
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  it('should create user', async () => {
+    const formData = testData.users.new;
 
     const response = await app.inject({
       method: 'POST',
       url: app.reverse('users'),
       payload: {
-        data: params,
+        data: formData,
       },
     });
 
     expect(response.statusCode).toBe(302);
 
     const expected = {
-      ..._.omit(params, 'password'),
-      passwordDigest: encrypt(params.password),
+      ..._.omit(formData, 'password'),
+      passwordDigest: encrypt(formData.password),
     };
 
-    const user = await models.user.query().findOne({ email: params.email });
+    const user = await models.user.query().findOne({ email: formData.email });
 
     expect(user).toMatchObject(expected);
   });
 
-  it('update', async () => {
+  it('should update user', async () => {
     const { email } = testData.users.existing;
-    const params = testData.users.new;
+    const formData = testData.users.new;
     const user = await models.user.query().findOne({ email });
 
     const response = await app.inject({
       method: 'PATCH',
       url: `/users/${user.id}`,
       payload: {
-        data: params,
+        data: formData,
       },
       cookies: cookie,
     });
@@ -102,14 +115,14 @@ describe('test users CRUD', () => {
     const updated = await models.user.query().findById(user.id);
 
     const expected = {
-      ..._.omit(params, 'password'),
-      passwordDigest: encrypt(params.password),
+      ..._.omit(formData, 'password'),
+      passwordDigest: encrypt(formData.password),
     };
 
     expect(updated).toMatchObject(expected);
   });
 
-  it('delete', async () => {
+  it('should delete user', async () => {
     const { email } = testData.users.existing;
 
     const user = await models.user.query().findOne({ email });
