@@ -4,21 +4,21 @@ export default (app) => {
   const { models } = app.objection;
 
   return {
-    renderUserList: async (req, reply) => {
+    getList: async (req, reply) => {
       const users = await models.user.query();
 
       reply.render('users/index', { users });
 
       return reply;
     },
-    renderUserCreateForm: (req, reply) => {
+    getCreateForm: (req, reply) => {
       const user = new models.user();
 
       reply.render('users/new', { user });
 
       return reply;
     },
-    createUser: async (req, reply) => {
+    create: async (req, reply) => {
       const { data } = req.body;
       const user = new models.user();
 
@@ -38,7 +38,7 @@ export default (app) => {
 
       return reply;
     },
-    renderUserUpdateForm: async (req, reply) => {
+    getUpdateForm: async (req, reply) => {
       const user = await models.user.query().findById(req.params.id);
 
       if (req.session.passport.id !== user.id) {
@@ -50,7 +50,7 @@ export default (app) => {
 
       return reply;
     },
-    updateUser: async (req, reply) => {
+    update: async (req, reply) => {
       const user = await models.user.query().findById(req.params.id);
 
       try {
@@ -65,7 +65,7 @@ export default (app) => {
 
       return reply;
     },
-    deleteUser: async (req, reply) => {
+    delete: async (req, reply) => {
       if (req.session.passport.id !== Number(req.params.id)) {
         req.flash('error', i18next.t('flash.users.delete.reject'));
         reply.redirect(app.reverse('root'));
