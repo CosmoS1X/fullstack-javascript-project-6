@@ -1,7 +1,7 @@
 extends ../layouts/application.pug
 
 block header
-  = t('layouts.application.editUser')
+  = t('layouts.headers.editUser')
 
 block content 
   +formFor()(action=`/users/${user.id}` method='post') 
@@ -10,4 +10,4 @@ block content
     +input(user, 'email', errors)(type='text')
     +input(user, 'password', errors)(type='password')
     input(name='_method' type='hidden' value='patch')
-    input.btn.btn-primary(type='submit' value= t('layouts.application.buttons.change'))
+    input.btn.btn-primary(type='submit' value= t('layouts.buttons.change'))

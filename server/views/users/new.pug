@@ -1,7 +1,7 @@
 extends ../layouts/application.pug
 
 block header
-  = t('views.users.new.signUp')
+  = t('layouts.headers.signUp')
 
 block content
   .row.justify-content-center
@@ -16,4 +16,4 @@ block content
               +input(user, 'lastName', errors)(type='text')
               +input(user, 'email', errors)(type='text')
               +input(user, 'password', errors)(type='password')
-              +submit(user)(value=t('views.users.new.submit'))
+              +submit(user)(value=t('layouts.buttons.save'))

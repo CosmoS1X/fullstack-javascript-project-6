@@ -1,18 +1,18 @@
 extends ../layouts/application.pug
 
 block header 
-  = t('layouts.application.users')
+  = t('layouts.headers.users')
 
 block content
   .table-responsive
     table.table.table-borderless.table-striped.mt-5.bg-white
       thead
         tr
-          th= t('views.users.id')
-          th= t('views.users.fullName')
-          th= t('views.users.email')
-          th= t('views.users.createdAt')
-          th= t('views.users.actions')
+          th= t('layouts.tableFields.id')
+          th= t('layouts.tableFields.fullName')
+          th= t('layouts.tableFields.email')
+          th= t('layouts.tableFields.createdAt')
+          th= t('layouts.tableFields.actions')
       tbody
         each user in users
           tr
@@ -22,7 +22,7 @@ block content
             td= formatDate(user.createdAt)
             td 
               .d-flex.flex-wrap
-                a.btn.btn-primary.me-1(href=`/users/${user.id}/edit`)= t('layouts.application.buttons.change')
+                a.btn.btn-primary.me-1(href=`/users/${user.id}/edit`)= t('layouts.buttons.change')
                 form(action=`/users/${user.id}` method='post')
                   input(name='_method' type='hidden' value='delete')
-                  input.btn.btn-danger(type='submit' value= t('layouts.application.buttons.delete'))
+                  input.btn.btn-danger(type='submit' value= t('layouts.buttons.delete'))

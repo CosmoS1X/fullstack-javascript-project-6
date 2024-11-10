@@ -11,7 +11,7 @@ export default (app) => {
 
       return reply;
     },
-    getCreateForm: (req, reply) => {
+    renderCreateForm: (req, reply) => {
       const user = new models.user();
 
       reply.render('users/new', { user });
@@ -38,7 +38,7 @@ export default (app) => {
 
       return reply;
     },
-    getUpdateForm: async (req, reply) => {
+    renderUpdateForm: async (req, reply) => {
       const user = await models.user.query().findById(req.params.id);
 
       if (req.session.passport.id !== user.id) {
