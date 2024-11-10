@@ -11,7 +11,7 @@ export default (app) => {
 
       return reply;
     },
-    getCreateForm: (req, reply) => {
+    renderCreateForm: (req, reply) => {
       const status = new models.taskStatus();
 
       reply.render('statuses/new', { status });
@@ -38,7 +38,7 @@ export default (app) => {
 
       return reply;
     },
-    getUpdateForm: async (req, reply) => {
+    renderUpdateForm: async (req, reply) => {
       const status = await models.taskStatus.query().findById(req.params.id);
 
       reply.render('statuses/edit', { status });
