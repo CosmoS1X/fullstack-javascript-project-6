@@ -41,12 +41,19 @@ export default {
           error: 'Failed to delete status',
         },
       },
+      tasks: {
+        create: {
+          success: 'Task successfully created',
+          error: 'Failed to create task',
+        },
+      },
       authError: 'Access denied! Please login',
     },
     layouts: {
       navbar: {
         users: 'Users',
         statuses: 'Statuses',
+        tasks: 'Tasks',
         signIn: 'Login',
         signUp: 'Register',
         signOut: 'Logout',
@@ -58,7 +65,9 @@ export default {
         editUser: 'Edit user',
         editStatus: 'Edit status',
         statuses: 'Statuses',
-        statusCreation: 'Creating status',
+        tasks: 'Tasks',
+        createStatus: 'Status creation',
+        createTask: 'Task creation',
       },
       buttons: {
         login: 'Login',
@@ -67,19 +76,36 @@ export default {
         delete: 'Delete',
         create: 'Create',
         createStatus: 'Create status',
+        createTask: 'Create task',
       },
-      inputs: {
-        firstName: 'First Name',
-        lastName: 'Last Name',
-        email: 'Email',
-        password: 'Password',
-        name: 'Name',
+      form: {
+        inputs: {
+          firstName: 'First name',
+          lastName: 'Last Name',
+          email: 'Email',
+          password: 'Password',
+          name: 'Name',
+        },
+        textarea: {
+          description: 'Description',
+        },
+        selects: {
+          status: 'Status',
+          executor: 'Executor',
+          defaults: {
+            status: '-- Select status --',
+            executor: '-- Select executor --',
+          },
+        },
       },
       tableFields: {
         id: 'ID',
         fullName: 'Full name',
         email: 'Email',
         name: 'Name',
+        status: 'Status',
+        creator: 'Author',
+        executor: 'Executor',
         createdAt: 'Created at',
         actions: 'Actions',
       },

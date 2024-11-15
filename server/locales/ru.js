@@ -41,12 +41,19 @@ export default {
           error: 'Не удалось удалить статус',
         },
       },
+      tasks: {
+        create: {
+          success: 'Задача успешно создана',
+          error: 'Не удалось создать задачу',
+        },
+      },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
     },
     layouts: {
       navbar: {
         users: 'Пользователи',
         statuses: 'Статусы',
+        tasks: 'Задачи',
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
@@ -58,7 +65,9 @@ export default {
         editUser: 'Изменение пользователя',
         editStatus: 'Изменение статуса',
         statuses: 'Статусы',
-        statusCreation: 'Создание статуса',
+        tasks: 'Задачи',
+        createStatus: 'Создание статуса',
+        createTask: 'Создание задачи',
       },
       buttons: {
         login: 'Войти',
@@ -67,19 +76,36 @@ export default {
         delete: 'Удалить',
         create: 'Создать',
         createStatus: 'Создать статус',
+        createTask: 'Создать задачу',
       },
-      inputs: {
-        firstName: 'Имя',
-        lastName: 'Фамилия',
-        email: 'Email',
-        password: 'Пароль',
-        name: 'Наименование',
+      form: {
+        inputs: {
+          firstName: 'Имя',
+          lastName: 'Фамилия',
+          email: 'Email',
+          password: 'Пароль',
+          name: 'Наименование',
+        },
+        textarea: {
+          description: 'Описание',
+        },
+        selects: {
+          status: 'Статус',
+          executor: 'Исполнитель',
+          defaults: {
+            status: '-- Выберите статус --',
+            executor: '-- Выберите исполнителя --',
+          },
+        },
       },
       tableFields: {
         id: 'ID',
         fullName: 'Полное имя',
         email: 'Email',
         name: 'Наименование',
+        status: 'Статус',
+        creator: 'Автор',
+        executor: 'Исполнитель',
         createdAt: 'Дата создания',
         actions: 'Действия',
       },
