@@ -22,6 +22,4 @@ block content
             td
               .d-flex
                 a.btn.btn-primary.me-1(href=`/statuses/${status.id}/edit`)= t('layouts.buttons.change')
-                form(action=`/statuses/${status.id}` method='post')
-                  input(name='_method' type='hidden' value='delete')
-                  input.btn.btn-danger(type='submit' value= t('layouts.buttons.delete'))
+                +buttonTo(`/statuses/${status.id}`, 'delete')(class='btn btn-danger' value= t('layouts.buttons.delete'))
