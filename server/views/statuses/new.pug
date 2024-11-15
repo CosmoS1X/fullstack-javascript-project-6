@@ -1,9 +1,9 @@
 extends ../layouts/application.pug
 
 block header 
-  = t('layouts.headers.statusCreation')
+  = t('layouts.headers.createStatus')
 
 block content 
-  +formFor()(action='/statuses' method='post')
+  +formFor()(action= route('statuses') method='post')
     +input(status, 'name', errors)(type='text')
-    +submit(status)(value=t('layouts.buttons.create'))
+    +submit(status)(value= t('layouts.buttons.create'))
