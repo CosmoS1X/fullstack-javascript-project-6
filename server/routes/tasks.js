@@ -5,10 +5,9 @@ export default (app) => {
 
   app.get('/tasks', { name: 'tasks', preValidation: app.authenticate }, controller.getList);
   app.get('/tasks/new', { name: 'newTask', preValidation: app.authenticate }, controller.renderCreateForm);
+  app.get('/tasks/:id', { name: 'task' }, controller.show);
+  app.get('/tasks/:id/edit', { name: 'editTask', preValidation: app.authenticate }, controller.renderUpdateForm);
   app.post('/tasks', { preValidation: app.authenticate }, controller.create);
+  app.patch('/tasks/:id', { preValidation: app.authenticate }, controller.update);
+  app.delete('/tasks/:id', { preValidation: app.authenticate }, controller.delete);
 };
-
-// GET /tasks/:id - страница просмотра задачи
-// GET /tasks/:id/edit - страница редактирования задачи
-// PATCH /tasks/:id - обновление задачи
-// DELETE /tasks/:id - удаление задачи
