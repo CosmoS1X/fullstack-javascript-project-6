@@ -46,6 +46,11 @@ export default {
           success: 'Задача успешно создана',
           error: 'Не удалось создать задачу',
         },
+        edit: {
+          success: 'Задача успешно изменена',
+          error: 'Не удалось изменить задачу',
+          reject: 'Задачу может удалить только её автор',
+        },
       },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
     },
@@ -78,6 +83,9 @@ export default {
         createStatus: 'Создать статус',
         createTask: 'Создать задачу',
       },
+      tableFields: {
+        actions: 'Действия',
+      },
       form: {
         inputs: {
           firstName: 'Имя',
@@ -98,17 +106,16 @@ export default {
           },
         },
       },
-      tableFields: {
-        id: 'ID',
-        fullName: 'Полное имя',
-        email: 'Email',
-        name: 'Наименование',
-        status: 'Статус',
-        creator: 'Автор',
-        executor: 'Исполнитель',
-        createdAt: 'Дата создания',
-        actions: 'Действия',
-      },
+    },
+    entityFields: {
+      id: 'ID',
+      fullName: 'Полное имя',
+      email: 'Email',
+      name: 'Наименование',
+      status: 'Статус',
+      creator: 'Автор',
+      executor: 'Исполнитель',
+      createdAt: 'Дата создания',
     },
     views: {
       welcome: {

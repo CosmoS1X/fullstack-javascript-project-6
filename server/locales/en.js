@@ -46,6 +46,11 @@ export default {
           success: 'Task successfully created',
           error: 'Failed to create task',
         },
+        edit: {
+          success: 'Task successfully changed',
+          error: 'Failed to change task',
+          reject: 'Task can be deleted only by its author',
+        },
       },
       authError: 'Access denied! Please login',
     },
@@ -78,6 +83,9 @@ export default {
         createStatus: 'Create status',
         createTask: 'Create task',
       },
+      tableFields: {
+        actions: 'Actions',
+      },
       form: {
         inputs: {
           firstName: 'First name',
@@ -98,17 +106,16 @@ export default {
           },
         },
       },
-      tableFields: {
-        id: 'ID',
-        fullName: 'Full name',
-        email: 'Email',
-        name: 'Name',
-        status: 'Status',
-        creator: 'Author',
-        executor: 'Executor',
-        createdAt: 'Created at',
-        actions: 'Actions',
-      },
+    },
+    entityFields: {
+      id: 'ID',
+      fullName: 'Full name',
+      email: 'Email',
+      name: 'Name',
+      status: 'Status',
+      creator: 'Author',
+      executor: 'Executor',
+      createdAt: 'Created at',
     },
     views: {
       welcome: {
