@@ -1,7 +1,5 @@
-- const getInputId = (property) => `data_${property}`
-- const getInputName = (property) => `data[${property}]`
-- const getSelectId = (property) => `data_${property}Id`;
-- const getSelectName = (property) => `data[${property}Id]`
+- const makeElementId = (property) => `data_${property}`
+- const makeElementName = (property) => `data[${property}]`
 
 mixin formFor(entity = null)
   form&attributes(attributes)
@@ -10,11 +8,11 @@ mixin formFor(entity = null)
 mixin input(entity, propertyName, errors = {})
   - propertyErrors = _.get(errors, propertyName)
   - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
-  - inputId = getInputId(propertyName)
+  - inputId = makeElementId(propertyName)
   .form-floating.mb-3(class=(errors[propertyName] && 'has-danger'))
     input(
       id= inputId
-      name= getInputName(propertyName)
+      name= makeElementName(propertyName)
       class= classLine
       value= _.get(entity, propertyName, '')
       placeholder= t(`layouts.form.inputs.${propertyName}`)
@@ -26,36 +24,37 @@ mixin input(entity, propertyName, errors = {})
 mixin textarea(entity, propertyName, errors = {})
   - propertyErrors = _.get(errors, propertyName)
   - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
-  - inputId = getInputId(propertyName)
+  - textareaId = makeElementId(propertyName)
   .form-floating.mb-3 
     textarea(
-      id= inputId 
-      name= getInputName(propertyName)
+      id= textareaId 
+      name= makeElementName(propertyName)
       class= classLine
       style='height: 100px'
       placeholder= t(`layouts.form.textarea.${propertyName}`)
     )&attributes(attributes)
+      block
     if !_.isEmpty(propertyErrors)
       .form-control-feedback.invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
-    label(for= inputId)= t(`layouts.form.textarea.${propertyName}`)
+    label(for= textareaId)= t(`layouts.form.textarea.${propertyName}`)
 
 mixin select(entity, propertyName, selectItems, errors = {})
-  - propertyNameWithId = propertyName + 'Id'
-  - propertyErrors = _.get(errors, propertyNameWithId)
+  - propertyErrors = _.get(errors, propertyName)
   - classLine = 'form-control' + (_.isEmpty(propertyErrors) ? '' : ' is-invalid')
-  - selectId = getSelectId(propertyName)
+  - selectId = makeElementId(propertyName)
+  - labelName = propertyName.replace('Id', '')
   .form-floating.mb-3 
     select(
       id= selectId
-      name= getSelectName(propertyName)
+      name= makeElementName(propertyName)
       class= classLine
     )&attributes(attributes)
-      option= t(`layouts.form.selects.defaults.${propertyName}`)
+      option= t(`layouts.form.selects.defaults.${labelName}`)
       each item in selectItems 
-        option(value=item.id)= item.name || item.fullName()
+        option(value=item.id selected=item.id === entity[propertyName])= item.name || item.fullName()
     if !_.isEmpty(propertyErrors)
       .form-control-feedback.invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
-    label(for= selectId)= t(`layouts.form.selects.${propertyName}`)
+    label(for= selectId)= t(`layouts.form.selects.${labelName}`)
 
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
