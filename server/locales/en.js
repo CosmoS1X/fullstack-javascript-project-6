@@ -49,6 +49,10 @@ export default {
         edit: {
           success: 'Task successfully changed',
           error: 'Failed to change task',
+        },
+        delete: {
+          success: 'Task successfully deleted',
+          error: 'Failed to delete task',
           reject: 'Task can be deleted only by its author',
         },
       },
