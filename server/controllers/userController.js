@@ -66,7 +66,9 @@ export default (app) => {
       return reply;
     },
     delete: async (req, reply) => {
-      if (req.session.passport.id !== Number(req.params.id)) {
+      const user = await models.user.query().findById(req.params.id);
+
+      if (req.session.passport.id !== user.id) {
         req.flash('error', i18next.t('flash.users.delete.reject'));
         reply.redirect(app.reverse('root'));
 
@@ -81,6 +83,7 @@ export default (app) => {
         reply.redirect(app.reverse('users'));
       } catch (error) {
         req.flash('error', i18next.t('flash.users.delete.error'));
+        reply.redirect(app.reverse('users'));
       }
 
       return reply;
