@@ -122,5 +122,27 @@ export default (app) => {
 
       return reply;
     },
+    delete: async (req, reply) => {
+      const task = await models.task.query().findById(req.params.id);
+
+      if (req.session.passport.id !== task.creatorId) {
+        req.flash('error', i18next.t('flash.tasks.delete.reject'));
+        reply.redirect(app.reverse('tasks'));
+
+        return reply;
+      }
+
+      try {
+        await models.task.query().deleteById(task.id);
+
+        req.flash('info', i18next.t('flash.tasks.delete.success'));
+        reply.redirect(app.reverse('tasks'));
+      } catch (error) {
+        req.flash('error', i18next.t('flash.tasks.delete.error'));
+        reply.redirect(app.reverse('tasks'));
+      }
+
+      return reply;
+    },
   };
 };
