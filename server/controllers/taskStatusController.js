@@ -49,7 +49,7 @@ export default (app) => {
       const status = await models.taskStatus.query().findById(req.params.id);
 
       try {
-        await status.$query().update(req.body.data);
+        await status.$query().patch(req.body.data);
 
         req.flash('info', i18next.t('flash.statuses.edit.success'));
         reply.redirect(app.reverse('statuses'));

@@ -54,7 +54,7 @@ export default (app) => {
       const user = await models.user.query().findById(req.params.id);
 
       try {
-        await user.$query().update(req.body.data);
+        await user.$query().patch(req.body.data);
 
         req.flash('success', i18next.t('flash.users.edit.success'));
         reply.redirect(app.reverse('users'));
