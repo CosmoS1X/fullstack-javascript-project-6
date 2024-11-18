@@ -11,17 +11,17 @@ block content
       .mb-2
         span.me-1.badge.bg-danger.text.white= task.status.name
       .d-flex.flex-wrap.mb-3
-        span.text-muted.me-2= t('layouts.tableFields.creator')
+        span.text-muted.me-2= t('entityFields.creator')
         span= task.creator.fullName()
       .d-flex.flex-wrap.mb-3
-        span.text-muted.me-2= t('layouts.tableFields.executor')
+        span.text-muted.me-2= t('entityFields.executor')
         span
           if task.executor
             | #{task.executor.fullName()}
           else
             | #{''}
       .d-flex.flex-wrap.mb-3
-        span.text-muted.me-2= t('layouts.tableFields.createdAt')
+        span.text-muted.me-2= t('entityFields.createdAt')
         span= task.createdAt
       .d-flex.flex-wrap
         a.btn.btn-primary.me-1(href= route('editTask', { id: task.id }))= t('layouts.buttons.change')
