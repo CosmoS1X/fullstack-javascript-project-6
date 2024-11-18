@@ -17,6 +17,17 @@ const encryptPassword = (user) => ({
 const usersTestData = {
   new: createRandomUser(),
   existing: createRandomUser(),
+  taskCreator: createRandomUser(),
+};
+
+const getUsersModelData = () => {
+  const usersData = [
+    usersTestData.taskCreator,
+    usersTestData.existing,
+    ...faker.helpers.multiple(createRandomUser, { count: 3 }),
+  ];
+
+  return usersData.map((user) => encryptPassword(user));
 };
 
 const createRandomStatus = () => ({
@@ -28,24 +39,34 @@ const statusesTestData = {
   existing: createRandomStatus(),
 };
 
-const getUsersModelData = () => {
-  const users = faker.helpers.multiple(createRandomUser, { count: 2 });
-
-  return [...users, usersTestData.existing].map((user) => encryptPassword(user));
-};
-
 const getStatusesModelData = () => {
-  const statuses = faker.helpers.multiple(createRandomStatus, { count: 3 });
+  const statuses = faker.helpers.multiple(createRandomStatus, { count: 4 });
 
   return [...statuses, statusesTestData.existing];
 };
 
+const createRandomTask = () => ({
+  name: faker.lorem.word(),
+  description: faker.lorem.text(),
+  statusId: faker.number.int({ min: 1, max: 5 }),
+  executorId: faker.number.int({ min: 1, max: 5 }),
+});
+
+const tasksTestData = {
+  new: createRandomTask(),
+  existing: { ...createRandomTask(), creatorId: 1 },
+};
+
+const getTasksModelData = () => [tasksTestData.existing];
+
 const usersModelData = getUsersModelData();
 const statusesModelData = getStatusesModelData();
+const tasksModelData = getTasksModelData();
 
 export const getTestData = () => ({
   users: usersTestData,
   statuses: statusesTestData,
+  tasks: tasksTestData,
 });
 
 export const prepareData = async (app) => {
@@ -53,4 +74,5 @@ export const prepareData = async (app) => {
 
   await knex('users').insert(usersModelData);
   await knex('task_statuses').insert(statusesModelData);
+  await knex('tasks').insert(tasksModelData);
 };
