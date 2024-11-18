@@ -30,7 +30,7 @@ describe('test users CRUD', () => {
 
     const responseSignIn = await app.inject({
       method: 'POST',
-      url: '/session',
+      url: app.reverse('session'),
       payload: {
         data: testData.users.existing,
       },
