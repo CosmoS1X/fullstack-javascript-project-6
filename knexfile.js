@@ -1,5 +1,3 @@
-// @ts-check
-
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -16,6 +14,9 @@ export const development = {
   },
   useNullAsDefault: true,
   migrations,
+  pool: {
+    afterCreate: (conn, cb) => conn.run('PRAGMA foreign_keys = ON', cb),
+  },
 };
 
 export const test = {

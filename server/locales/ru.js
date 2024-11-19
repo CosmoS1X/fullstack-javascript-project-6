@@ -41,12 +41,28 @@ export default {
           error: 'Не удалось удалить статус',
         },
       },
+      tasks: {
+        create: {
+          success: 'Задача успешно создана',
+          error: 'Не удалось создать задачу',
+        },
+        edit: {
+          success: 'Задача успешно изменена',
+          error: 'Не удалось изменить задачу',
+        },
+        delete: {
+          success: 'Задача успешно удалена',
+          error: 'Не удалось удалить задачу',
+          reject: 'Задачу может удалить только её автор',
+        },
+      },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
     },
     layouts: {
       navbar: {
         users: 'Пользователи',
         statuses: 'Статусы',
+        tasks: 'Задачи',
         signIn: 'Вход',
         signUp: 'Регистрация',
         signOut: 'Выход',
@@ -58,7 +74,9 @@ export default {
         editUser: 'Изменение пользователя',
         editStatus: 'Изменение статуса',
         statuses: 'Статусы',
-        statusCreation: 'Создание статуса',
+        tasks: 'Задачи',
+        createStatus: 'Создание статуса',
+        createTask: 'Создание задачи',
       },
       buttons: {
         login: 'Войти',
@@ -67,22 +85,41 @@ export default {
         delete: 'Удалить',
         create: 'Создать',
         createStatus: 'Создать статус',
-      },
-      inputs: {
-        firstName: 'Имя',
-        lastName: 'Фамилия',
-        email: 'Email',
-        password: 'Пароль',
-        name: 'Наименование',
+        createTask: 'Создать задачу',
       },
       tableFields: {
-        id: 'ID',
-        fullName: 'Полное имя',
-        email: 'Email',
-        name: 'Наименование',
-        createdAt: 'Дата создания',
         actions: 'Действия',
       },
+      form: {
+        inputs: {
+          firstName: 'Имя',
+          lastName: 'Фамилия',
+          email: 'Email',
+          password: 'Пароль',
+          name: 'Наименование',
+        },
+        textarea: {
+          description: 'Описание',
+        },
+        selects: {
+          status: 'Статус',
+          executor: 'Исполнитель',
+          defaults: {
+            status: '-- Выберите статус --',
+            executor: '-- Выберите исполнителя --',
+          },
+        },
+      },
+    },
+    entityFields: {
+      id: 'ID',
+      fullName: 'Полное имя',
+      email: 'Email',
+      name: 'Наименование',
+      status: 'Статус',
+      creator: 'Автор',
+      executor: 'Исполнитель',
+      createdAt: 'Дата создания',
     },
     views: {
       welcome: {

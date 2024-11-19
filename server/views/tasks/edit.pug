@@ -1,0 +1,13 @@
+extends ../layouts/application.pug
+
+block header
+  = t('layouts.headers.editStatus')
+
+block content 
+  +formFor()(action= route('task', { id: task.id }) method='post')
+    +input(task, 'name', errors)(type='text')
+    +textarea(task, 'description', errors)= task.description
+    +select(task, 'statusId', statuses, errors, formData)
+    +select(task, 'executorId', users, errors, formData)
+    input(name='_method' type='hidden' value='patch')
+    input.btn.btn-primary(type='submit' value= t('layouts.buttons.change'))
