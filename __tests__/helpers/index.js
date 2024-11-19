@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { faker } from '@faker-js/faker';
 import encrypt from '../../server/lib/secure.cjs';
 
-const createRandomUser = () => ({
+const createUser = () => ({
   firstName: faker.person.firstName(),
   lastName: faker.person.lastName(),
   email: faker.internet.email().toLowerCase(),
@@ -15,37 +15,37 @@ const encryptPassword = (user) => ({
 });
 
 const usersTestData = {
-  new: createRandomUser(),
-  existing: createRandomUser(),
-  taskCreator: createRandomUser(),
+  new: createUser(),
+  existing: createUser(),
+  taskCreator: createUser(),
 };
 
 const getUsersModelData = () => {
   const usersData = [
     usersTestData.taskCreator,
     usersTestData.existing,
-    ...faker.helpers.multiple(createRandomUser, { count: 3 }),
+    ...faker.helpers.multiple(createUser, { count: 3 }),
   ];
 
   return usersData.map((user) => encryptPassword(user));
 };
 
-const createRandomStatus = () => ({
+const createStatus = () => ({
   name: faker.lorem.word(),
 });
 
 const statusesTestData = {
-  new: createRandomStatus(),
-  existing: createRandomStatus(),
+  new: createStatus(),
+  existing: createStatus(),
 };
 
 const getStatusesModelData = () => {
-  const statuses = faker.helpers.multiple(createRandomStatus, { count: 4 });
+  const statuses = faker.helpers.multiple(createStatus, { count: 4 });
 
   return [...statuses, statusesTestData.existing];
 };
 
-const createRandomTask = () => ({
+const createTask = () => ({
   name: faker.lorem.word(),
   description: faker.lorem.text(),
   statusId: faker.number.int({ min: 1, max: 5 }),
@@ -53,8 +53,8 @@ const createRandomTask = () => ({
 });
 
 const tasksTestData = {
-  new: createRandomTask(),
-  existing: { ...createRandomTask(), creatorId: 1 },
+  new: createTask(),
+  existing: { ...createTask(), creatorId: 1 },
 };
 
 const getTasksModelData = () => [tasksTestData.existing];
