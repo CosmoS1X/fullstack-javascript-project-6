@@ -56,12 +56,27 @@ export default {
           reject: 'Task can be deleted only by its author',
         },
       },
+      labels: {
+        create: {
+          success: 'Label successfully created',
+          error: 'Failed to create label',
+        },
+        edit: {
+          success: 'Label successfully changed',
+          error: 'Failed to change label',
+        },
+        delete: {
+          success: 'Label successfully deleted',
+          error: 'Failed to delete label',
+        },
+      },
       authError: 'Access denied! Please login',
     },
     layouts: {
       navbar: {
         users: 'Users',
         statuses: 'Statuses',
+        labels: 'Labels',
         tasks: 'Tasks',
         signIn: 'Login',
         signUp: 'Register',
@@ -69,14 +84,17 @@ export default {
       },
       headers: {
         users: 'Users',
-        signUp: 'Register',
-        signIn: 'Login',
-        editUser: 'Edit user',
-        editStatus: 'Edit status',
         statuses: 'Statuses',
+        labels: 'Labels',
         tasks: 'Tasks',
         createStatus: 'Status creation',
         createTask: 'Task creation',
+        createLabel: 'Label creation',
+        editUser: 'Edit user',
+        editStatus: 'Edit status',
+        editLabel: 'Edit label',
+        signUp: 'Register',
+        signIn: 'Login',
       },
       buttons: {
         login: 'Login',
@@ -86,6 +104,7 @@ export default {
         create: 'Create',
         createStatus: 'Create status',
         createTask: 'Create task',
+        createLabel: 'Create label',
       },
       tableFields: {
         actions: 'Actions',
