@@ -1,4 +1,5 @@
 import i18next from 'i18next';
+import { transaction } from 'objection';
 
 export default (app) => {
   const { models } = app.objection;
@@ -20,13 +21,14 @@ export default (app) => {
       const task = new models.task();
       const users = await models.user.query();
       const statuses = await models.taskStatus.query();
+      const labels = await models.label.query();
 
-      reply.render('tasks/new', { task, users, statuses });
+      reply.render('tasks/new', { task, users, statuses, labels });
 
       return reply;
     },
     create: async (req, reply) => {
-      const { name, description, statusId, executorId } = req.body.data;
+      const { name, description, statusId, executorId, labels: labelIds } = req.body.data;
 
       const preparedData = {
         name,
@@ -34,6 +36,7 @@ export default (app) => {
         creatorId: req.session.passport.id,
         statusId: Number(statusId) || 0,
         executorId: Number(executorId) || null,
+        labels: Array.isArray(labelIds) ? labelIds : [labelIds],
       };
 
       const task = new models.task();
@@ -43,17 +46,27 @@ export default (app) => {
       try {
         const validData = await models.task.fromJson(preparedData);
 
-        await models.task.query().insert(validData);
+        await transaction(models.task, models.taskLabel, async (trxTask, trxTaskLabel) => {
+          const { id } = await trxTask.query().insertAndFetch(validData);
+
+          const promises = preparedData.labels.map(async (labelId) => {
+            await trxTaskLabel.query().insert({ taskId: id, labelId: Number(labelId) });
+          });
+
+          await Promise.all(promises);
+        });
 
         req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect(app.reverse('tasks'));
       } catch (error) {
         const users = await models.user.query();
         const statuses = await models.taskStatus.query();
+        const labels = await models.label.query();
         const data = {
           task,
           users,
           statuses,
+          labels,
           errors: error.data,
         };
 
@@ -69,7 +82,8 @@ export default (app) => {
         .findById(req.params.id)
         .withGraphFetched('status')
         .withGraphFetched('creator')
-        .withGraphFetched('executor');
+        .withGraphFetched('executor')
+        .withGraphFetched('labels');
 
       reply.render('tasks/show', { task });
 
@@ -81,38 +95,54 @@ export default (app) => {
         .findById(req.params.id)
         .withGraphFetched('status')
         .withGraphFetched('creator')
-        .withGraphFetched('executor');
+        .withGraphFetched('executor')
+        .withGraphFetched('labels');
 
       const users = await models.user.query();
       const statuses = await models.taskStatus.query();
+      const labels = await models.label.query();
 
-      reply.render('tasks/edit', { task, users, statuses });
+      reply.render('tasks/edit', { task, users, statuses, labels });
 
       return reply;
     },
     update: async (req, reply) => {
-      const task = await models.task.query().findById(req.params.id);
-      const { name, description, statusId, executorId } = req.body.data;
+      const { name, description, statusId, executorId, labels: labelIds } = req.body.data;
 
       const preparedData = {
         name,
         description,
         statusId: Number(statusId) || 0,
         executorId: Number(executorId) || null,
+        labels: Array.isArray(labelIds) ? labelIds : [labelIds],
       };
 
       try {
-        await task.$query().patch(preparedData);
+        await transaction(models.task, models.taskLabel, async (trxTask, trxTaskLabel) => {
+          const task = await trxTask.query().findById(req.params.id);
+
+          await trxTaskLabel.query().delete().where('taskId', task.id);
+          await task.$query().patch(preparedData);
+
+          const promises = preparedData.labels.map(async (labelId) => {
+            await trxTaskLabel.query().insert({ taskId: task.id, labelId: Number(labelId) });
+          });
+
+          await Promise.all(promises);
+        });
 
         req.flash('info', i18next.t('flash.tasks.edit.success'));
         reply.redirect(app.reverse('tasks'));
       } catch (error) {
+        const task = await models.task.query().findById(req.params.id);
         const users = await models.user.query();
         const statuses = await models.taskStatus.query();
+        const labels = await models.label.query();
         const data = {
           task,
           users,
           statuses,
+          labels,
           errors: error.data,
         };
 
