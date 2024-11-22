@@ -127,6 +127,7 @@ export default {
             status: '-- Select status --',
             executor: '-- Select executor --',
           },
+          labels: 'Labels',
         },
       },
     },
