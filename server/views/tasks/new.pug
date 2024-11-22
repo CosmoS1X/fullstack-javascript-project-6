@@ -9,4 +9,5 @@ block content
     +textarea(task, 'description', errors)
     +select(task, 'statusId', statuses, errors)
     +select(task, 'executorId', users, errors)
+    +multiSelect(task, 'labels', labels)
     +submit(task)(value= t('layouts.buttons.create'))
