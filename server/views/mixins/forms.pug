@@ -56,6 +56,18 @@ mixin select(entity, propertyName, selectItems, errors = {})
       .form-control-feedback.invalid-feedback= propertyErrors.map(({ message }) => message).join('. ')
     label(for= selectId)= t(`layouts.form.selects.${labelName}`)
 
+mixin multiSelect(entity, propertyName, selectItems)
+  - selectId = makeElementId(propertyName)
+  .mb-3
+    label(for= selectId)= t(`layouts.form.selects.${propertyName}`)
+    select.form-control(
+      id= selectId
+      name= makeElementName(propertyName)
+      multiple
+    )&attributes(attributes)
+      each item in selectItems
+        option(value= item.id selected= _.find(entity[propertyName], { id: item.id }))= item.name
+
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
 
