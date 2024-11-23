@@ -45,6 +45,21 @@ const getStatusesModelData = () => {
   return [...statuses, statusesTestData.existing];
 };
 
+const createLabel = () => ({
+  name: faker.lorem.word(),
+});
+
+const labelsTestData = {
+  new: createLabel(),
+  existing: createLabel(),
+};
+
+const getLabelsModelData = () => {
+  const labels = faker.helpers.multiple(createLabel, { count: 4 });
+
+  return [...labels, labelsTestData.existing];
+};
+
 const createTask = () => ({
   name: faker.lorem.word(),
   description: faker.lorem.text(),
@@ -62,11 +77,13 @@ const getTasksModelData = () => [tasksTestData.existing];
 const usersModelData = getUsersModelData();
 const statusesModelData = getStatusesModelData();
 const tasksModelData = getTasksModelData();
+const labelsModelData = getLabelsModelData();
 
 export const getTestData = () => ({
   users: usersTestData,
   statuses: statusesTestData,
   tasks: tasksTestData,
+  labels: labelsTestData,
 });
 
 export const prepareData = async (app) => {
@@ -75,4 +92,5 @@ export const prepareData = async (app) => {
   await knex('users').insert(usersModelData);
   await knex('task_statuses').insert(statusesModelData);
   await knex('tasks').insert(tasksModelData);
+  await knex('labels').insert(labelsModelData);
 };
