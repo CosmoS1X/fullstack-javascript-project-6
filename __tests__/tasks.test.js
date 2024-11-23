@@ -87,35 +87,38 @@ describe('test tasks CRUD', () => {
   });
 
   it('should create task', async () => {
-    const formData = testData.tasks.new;
+    const taskData = testData.tasks.new;
+    const labelsData = { labels: [] };
 
     const response = await app.inject({
       method: 'POST',
       url: app.reverse('tasks'),
       payload: {
-        data: formData,
+        data: { ...taskData, ...labelsData },
       },
       cookies: cookie,
     });
 
     expect(response.statusCode).toBe(302);
 
-    const task = await models.task.query().findOne({ name: formData.name });
+    const task = await models.task.query().findOne({ name: taskData.name });
 
-    expect(task).toMatchObject(formData);
+    expect(task).toMatchObject(taskData);
   });
 
   it('should update task', async () => {
-    const { name } = testData.tasks.existing;
-    const formData = testData.tasks.new;
-
-    const task = await models.task.query().findOne({ name });
+    const { name: taskName } = testData.tasks.existing;
+    const { name: labelName } = testData.labels.existing;
+    const task = await models.task.query().findOne({ name: taskName });
+    const label = await models.label.query().findOne({ name: labelName });
+    const taskData = testData.tasks.new;
+    const labelsData = { labels: [label.id] };
 
     const response = await app.inject({
       method: 'PATCH',
       url: app.reverse('task', { id: task.id }),
       payload: {
-        data: formData,
+        data: { ...taskData, ...labelsData },
       },
       cookies: cookie,
     });
@@ -123,8 +126,10 @@ describe('test tasks CRUD', () => {
     expect(response.statusCode).toBe(302);
 
     const updated = await models.task.query().findById(task.id);
+    const { labelId } = await models.taskLabel.query().findOne({ taskId: task.id });
 
-    expect(updated).toMatchObject(formData);
+    expect(updated).toMatchObject(taskData);
+    expect(labelId).toBe(label.id);
   });
 
   it('should delete task', async () => {
