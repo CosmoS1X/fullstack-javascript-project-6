@@ -1,0 +1,9 @@
+mixin formCard(imgName)
+  .row.justify-content-center
+    .col-12.col-md-8
+      .card.shadow-sm
+        .card-body.row.p-5
+          .col-12.col-md-6.d-flex.align-items-center.justify-content-center
+            img.rounded-circle(src=`/assets/${imgName}`)
+          .col-12.col-md-6.mt-3.mt-mb-0
+            block
