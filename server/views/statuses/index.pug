@@ -4,22 +4,6 @@ block header
   = t('layouts.headers.statuses')
 
 block content 
-  a.btn.btn-primary(href='/statuses/new')= t('layouts.buttons.createStatus')
-  .table-responsive 
-    table.table.table-borderless.table-striped.mt-5.bg-white
-      thead 
-        tr 
-          th.py-3= t('entityFields.id')
-          th.py-3= t('entityFields.name')
-          th.py-3= t('entityFields.createdAt')
-          th.py-3= t('layouts.tableFields.actions')
-      tbody 
-        each status in statuses 
-          tr
-            td= status.id
-            td= status.name
-            td= formatDate(status.createdAt)
-            td
-              .d-flex
-                a.btn.btn-primary.me-1(href=`/statuses/${status.id}/edit`)= t('layouts.buttons.change')
-                +buttonTo(`/statuses/${status.id}`, 'delete')(class='btn btn-danger' value= t('layouts.buttons.delete'))
+  a.btn.btn-primary(href= route('newStatus'))= t('layouts.buttons.createStatus')
+  - cols = ['id', 'name', 'createdAt']
+  +table('status', cols, statuses)

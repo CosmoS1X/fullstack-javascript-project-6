@@ -4,25 +4,5 @@ block header
   = t('layouts.headers.users')
 
 block content
-  .table-responsive
-    table.table.table-borderless.table-striped.mt-5.bg-white
-      thead
-        tr
-          th= t('entityFields.id')
-          th= t('entityFields.fullName')
-          th= t('entityFields.email')
-          th= t('entityFields.createdAt')
-          th= t('layouts.tableFields.actions')
-      tbody
-        each user in users
-          tr
-            td= user.id
-            td= user.fullName()
-            td= user.email
-            td= formatDate(user.createdAt)
-            td 
-              .d-flex.flex-wrap
-                a.btn.btn-primary.me-1(href=`/users/${user.id}/edit`)= t('layouts.buttons.change')
-                form(action=`/users/${user.id}` method='post')
-                  input(name='_method' type='hidden' value='delete')
-                  input.btn.btn-danger(type='submit' value= t('layouts.buttons.delete'))
+  - cols = ['id', 'fullName', 'email', 'createdAt']
+  +table('user', cols, users)

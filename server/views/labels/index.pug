@@ -5,21 +5,5 @@ block header
 
 block content 
   a.btn.btn-primary(href= route('newLabel'))= t('layouts.buttons.createLabel')
-  .table-responsive 
-    table.table.table-borderless.table-striped.mt-5.bg-white
-      thead 
-        tr 
-          th.py-3= t('entityFields.id')
-          th.py-3= t('entityFields.name')
-          th.py-3= t('entityFields.createdAt')
-          th.py-3= t('layouts.tableFields.actions')
-      tbody 
-        each label in labels 
-          tr
-            td= label.id
-            td= label.name
-            td= formatDate(label.createdAt)
-            td
-              .d-flex
-                a.btn.btn-primary.me-1(href= route('editLabel', { id: label.id }))= t('layouts.buttons.change')
-                +buttonTo(route('label', { id: label.id }), 'delete')(class='btn btn-danger' value= t('layouts.buttons.delete'))
+  - cols = ['id', 'name', 'createdAt']
+  +table('label', cols, labels)
