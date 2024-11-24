@@ -26,7 +26,8 @@ html(lang="en")
               li.nav-item 
                 a.nav-link(href=route('tasks'))= t('layouts.navbar.tasks')
               li.nav-item
-                +buttonTo(route('session'), 'delete')(class="btn nav-link" value=t('layouts.navbar.signOut'))
+                form(action= route('session') method='post')
+                  +actionButton('delete')(class="btn nav-link" value=t('layouts.navbar.signOut'))
             else
               li.nav-item
                 a.nav-link(href=route('newSession'))= t('layouts.navbar.signIn')

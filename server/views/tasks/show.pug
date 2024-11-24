@@ -17,14 +17,14 @@ block content
         span= task.creator.fullName()
       .d-flex.flex-wrap.mb-3
         span.text-muted.me-2= t('entityFields.executor')
-        span
-          if task.executor
-            | #{task.executor.fullName()}
-          else
-            | #{''}
+        if !!task.executor
+          span= task.executor.fullName()
+        else
+          span= ''
       .d-flex.flex-wrap.mb-3
         span.text-muted.me-2= t('entityFields.createdAt')
         span= task.createdAt
       .d-flex.flex-wrap
         a.btn.btn-primary.me-1(href= route('editTask', { id: task.id }))= t('layouts.buttons.change')
-        +buttonTo(route('task', { id: task.id }), 'delete')(class='btn btn-danger' value= t('layouts.buttons.delete'))
+        form(action= route('task', { id: task.id }), method="post")
+          +actionButton('delete')(class='btn btn-danger' value= t('layouts.buttons.delete'))
