@@ -103,7 +103,7 @@ describe('test users CRUD', () => {
 
     const response = await app.inject({
       method: 'PATCH',
-      url: `/users/${user.id}`,
+      url: app.reverse('user', { id: user.id }),
       payload: {
         data: formData,
       },
@@ -129,7 +129,7 @@ describe('test users CRUD', () => {
 
     const response = await app.inject({
       method: 'DELETE',
-      url: `/users/${user.id}`,
+      url: app.reverse('user', { id: user.id }),
       cookies: cookie,
     });
 

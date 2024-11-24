@@ -99,7 +99,7 @@ describe('test statuses CRUD', () => {
 
     const response = await app.inject({
       method: 'PATCH',
-      url: `/statuses/${status.id}`,
+      url: app.reverse('status', { id: status.id }),
       payload: {
         data: formData,
       },
@@ -119,7 +119,7 @@ describe('test statuses CRUD', () => {
 
     const response = await app.inject({
       method: 'DELETE',
-      url: `/statuses/${status.id}`,
+      url: app.reverse('status', { id: status.id }),
       cookies: cookie,
     });
 
