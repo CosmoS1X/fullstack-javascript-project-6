@@ -47,22 +47,22 @@ export default (app) => {
 
       task.$set(preparedData);
 
-      const trx = await models.task.startTransaction();
+      const transaction = await models.task.startTransaction();
 
       try {
         const validData = await models.task.fromJson(preparedData);
-        const { id } = await models.task.query(trx).insertAndFetch(validData);
+        const { id } = await models.task.query(transaction).insertAndFetch(validData);
 
         for (const label of preparedData.labels) {
-          await models.taskLabel.query(trx).insert({ taskId: id, labelId: label.id });
+          await models.taskLabel.query(transaction).insert({ taskId: id, labelId: label.id });
         }
 
-        await trx.commit();
+        await transaction.commit();
 
         req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect(app.reverse('tasks'));
       } catch (error) {
-        await trx.rollback();
+        await transaction.rollback();
 
         const users = await models.user.query();
         const statuses = await models.taskStatus.query();
@@ -124,22 +124,22 @@ export default (app) => {
         labels: selectedLabels,
       };
 
-      const trx = await models.task.startTransaction();
+      const transaction = await models.task.startTransaction();
 
       try {
-        await models.taskLabel.query(trx).delete().where('taskId', task.id);
-        await task.$query(trx).patch(_.omit(preparedData, 'labels'));
+        await models.taskLabel.query(transaction).delete().where('taskId', task.id);
+        await task.$query(transaction).patch(_.omit(preparedData, 'labels'));
 
         for (const label of preparedData.labels) {
-          await models.taskLabel.query(trx).insert({ taskId: task.id, labelId: label.id });
+          await models.taskLabel.query(transaction).insert({ taskId: task.id, labelId: label.id });
         }
 
-        await trx.commit();
+        await transaction.commit();
 
         req.flash('info', i18next.t('flash.tasks.edit.success'));
         reply.redirect(app.reverse('tasks'));
       } catch (error) {
-        await trx.rollback();
+        await transaction.rollback();
 
         const users = await models.user.query();
         const statuses = await models.taskStatus.query();
