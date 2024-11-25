@@ -32,7 +32,9 @@ export default (app) => {
     },
     create: async (req, reply) => {
       const { name, description, statusId, executorId, labels: labelIds = [] } = req.body.data;
-      const selectedLabels = await models.label.query().whereIn('id', [labelIds].flat());
+      const selectedLabels = await models.label
+        .query()
+        .whereIn('id', Array.isArray(labelIds) ? labelIds : [labelIds]);
 
       const preparedData = {
         name,
@@ -114,7 +116,9 @@ export default (app) => {
     update: async (req, reply) => {
       const { name, description, statusId, executorId, labels: labelIds = [] } = req.body.data;
       const task = await models.task.query().findById(req.params.id).withGraphFetched('labels');
-      const selectedLabels = await models.label.query().whereIn('id', [labelIds].flat());
+      const selectedLabels = await models.label
+        .query()
+        .whereIn('id', Array.isArray(labelIds) ? labelIds : [labelIds]);
 
       const preparedData = {
         name,
