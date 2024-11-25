@@ -56,12 +56,27 @@ export default {
           reject: 'Задачу может удалить только её автор',
         },
       },
+      labels: {
+        create: {
+          success: 'Метка успешно создана',
+          error: 'Не удалось создать метку',
+        },
+        edit: {
+          success: 'Метка успешно изменена',
+          error: 'Не удалось изменить метку',
+        },
+        delete: {
+          success: 'Метка успешно удалена',
+          error: 'Не удалось удалить метку',
+        },
+      },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
     },
     layouts: {
       navbar: {
         users: 'Пользователи',
         statuses: 'Статусы',
+        labels: 'Метки',
         tasks: 'Задачи',
         signIn: 'Вход',
         signUp: 'Регистрация',
@@ -69,14 +84,17 @@ export default {
       },
       headers: {
         users: 'Пользователи',
-        signUp: 'Регистрация',
-        signIn: 'Вход',
-        editUser: 'Изменение пользователя',
-        editStatus: 'Изменение статуса',
         statuses: 'Статусы',
+        labels: 'Метки',
         tasks: 'Задачи',
         createStatus: 'Создание статуса',
         createTask: 'Создание задачи',
+        createLabel: 'Создание метки',
+        editUser: 'Изменение пользователя',
+        editStatus: 'Изменение статуса',
+        editLabel: 'Изменение метки',
+        signUp: 'Регистрация',
+        signIn: 'Вход',
       },
       buttons: {
         login: 'Войти',
@@ -86,6 +104,7 @@ export default {
         create: 'Создать',
         createStatus: 'Создать статус',
         createTask: 'Создать задачу',
+        createLabel: 'Создать метку',
       },
       tableFields: {
         actions: 'Действия',
@@ -108,6 +127,7 @@ export default {
             status: '-- Выберите статус --',
             executor: '-- Выберите исполнителя --',
           },
+          labels: 'Метки',
         },
       },
     },

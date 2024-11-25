@@ -1,10 +1,8 @@
-import _ from 'lodash';
 import fastify from 'fastify';
 import init from '../server/plugin.js';
-import encrypt from '../server/lib/secure.cjs';
 import { getTestData, prepareData } from './helpers/index.js';
 
-describe('test users CRUD', () => {
+describe('test labels CRUD', () => {
   let app;
   let knex;
   let models;
@@ -42,68 +40,66 @@ describe('test users CRUD', () => {
     cookie = { [name]: value };
   });
 
-  it('should render users page', async () => {
+  it('should render labels page', async () => {
     const response = await app.inject({
       method: 'GET',
-      url: app.reverse('users'),
-    });
-
-    expect(response.statusCode).toBe(200);
-  });
-
-  it('should render user creation page', async () => {
-    const response = await app.inject({
-      method: 'GET',
-      url: app.reverse('newUser'),
-    });
-
-    expect(response.statusCode).toBe(200);
-  });
-
-  it('should render user update page', async () => {
-    const { email } = testData.users.existing;
-    const user = await models.user.query().findOne({ email });
-
-    const response = await app.inject({
-      method: 'GET',
-      url: app.reverse('editUser', { id: user.id }),
+      url: app.reverse('labels'),
       cookies: cookie,
     });
 
     expect(response.statusCode).toBe(200);
   });
 
-  it('should create user', async () => {
-    const formData = testData.users.new;
+  it('should render label creation page', async () => {
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('newLabel'),
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  it('should render label update page', async () => {
+    const { name } = testData.labels.existing;
+    const status = await models.label.query().findOne({ name });
+
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('editLabel', { id: status.id }),
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  it('should create label', async () => {
+    const formData = testData.statuses.new;
 
     const response = await app.inject({
       method: 'POST',
-      url: app.reverse('users'),
+      url: app.reverse('labels'),
       payload: {
         data: formData,
       },
+      cookies: cookie,
     });
 
     expect(response.statusCode).toBe(302);
 
-    const expected = {
-      ..._.omit(formData, 'password'),
-      passwordDigest: encrypt(formData.password),
-    };
+    const label = await models.label.query().findOne({ name: formData.name });
 
-    const user = await models.user.query().findOne({ email: formData.email });
-
-    expect(user).toMatchObject(expected);
+    expect(label).toMatchObject(formData);
   });
 
-  it('should update user', async () => {
-    const { email } = testData.users.existing;
-    const formData = testData.users.new;
-    const user = await models.user.query().findOne({ email });
+  it('should update label', async () => {
+    const { name } = testData.labels.existing;
+    const formData = testData.labels.new;
+    const label = await models.label.query().findOne({ name });
 
     const response = await app.inject({
       method: 'PATCH',
-      url: app.reverse('user', { id: user.id }),
+      url: app.reverse('label', { id: label.id }),
       payload: {
         data: formData,
       },
@@ -112,30 +108,24 @@ describe('test users CRUD', () => {
 
     expect(response.statusCode).toBe(302);
 
-    const updated = await models.user.query().findById(user.id);
+    const updated = await models.label.query().findById(label.id);
 
-    const expected = {
-      ..._.omit(formData, 'password'),
-      passwordDigest: encrypt(formData.password),
-    };
-
-    expect(updated).toMatchObject(expected);
+    expect(updated).toMatchObject(formData);
   });
 
-  it('should delete user', async () => {
-    const { email } = testData.users.existing;
-
-    const user = await models.user.query().findOne({ email });
+  it('should delete label', async () => {
+    const { name } = testData.statuses.existing;
+    const label = await models.taskStatus.query().findOne({ name });
 
     const response = await app.inject({
       method: 'DELETE',
-      url: app.reverse('user', { id: user.id }),
+      url: app.reverse('label', { id: label.id }),
       cookies: cookie,
     });
 
     expect(response.statusCode).toBe(302);
 
-    const deleted = await models.user.query().findOne({ email });
+    const deleted = await models.label.query().findById(label.id);
 
     expect(deleted).toBeUndefined();
   });

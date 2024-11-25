@@ -1,4 +1,8 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
+
 import i18next from 'i18next';
+import _ from 'lodash';
 
 export default (app) => {
   const { models } = app.objection;
@@ -20,13 +24,17 @@ export default (app) => {
       const task = new models.task();
       const users = await models.user.query();
       const statuses = await models.taskStatus.query();
+      const labels = await models.label.query();
 
-      reply.render('tasks/new', { task, users, statuses });
+      reply.render('tasks/new', { task, users, statuses, labels });
 
       return reply;
     },
     create: async (req, reply) => {
-      const { name, description, statusId, executorId } = req.body.data;
+      const { name, description, statusId, executorId, labels: labelIds = [] } = req.body.data;
+      const selectedLabels = await models.label
+        .query()
+        .whereIn('id', Array.isArray(labelIds) ? labelIds : [labelIds]);
 
       const preparedData = {
         name,
@@ -34,26 +42,38 @@ export default (app) => {
         creatorId: req.session.passport.id,
         statusId: Number(statusId) || 0,
         executorId: Number(executorId) || null,
+        labels: selectedLabels,
       };
 
       const task = new models.task();
 
       task.$set(preparedData);
 
+      const transaction = await models.task.startTransaction();
+
       try {
         const validData = await models.task.fromJson(preparedData);
+        const { id } = await models.task.query(transaction).insertAndFetch(validData);
 
-        await models.task.query().insert(validData);
+        for (const label of preparedData.labels) {
+          await models.taskLabel.query(transaction).insert({ taskId: id, labelId: label.id });
+        }
+
+        await transaction.commit();
 
         req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect(app.reverse('tasks'));
       } catch (error) {
+        await transaction.rollback();
+
         const users = await models.user.query();
         const statuses = await models.taskStatus.query();
+        const labels = await models.label.query();
         const data = {
           task,
           users,
           statuses,
+          labels,
           errors: error.data,
         };
 
@@ -69,7 +89,8 @@ export default (app) => {
         .findById(req.params.id)
         .withGraphFetched('status')
         .withGraphFetched('creator')
-        .withGraphFetched('executor');
+        .withGraphFetched('executor')
+        .withGraphFetched('labels');
 
       reply.render('tasks/show', { task });
 
@@ -81,38 +102,57 @@ export default (app) => {
         .findById(req.params.id)
         .withGraphFetched('status')
         .withGraphFetched('creator')
-        .withGraphFetched('executor');
+        .withGraphFetched('executor')
+        .withGraphFetched('labels');
 
       const users = await models.user.query();
       const statuses = await models.taskStatus.query();
+      const labels = await models.label.query();
 
-      reply.render('tasks/edit', { task, users, statuses });
+      reply.render('tasks/edit', { task, users, statuses, labels });
 
       return reply;
     },
     update: async (req, reply) => {
-      const task = await models.task.query().findById(req.params.id);
-      const { name, description, statusId, executorId } = req.body.data;
+      const { name, description, statusId, executorId, labels: labelIds = [] } = req.body.data;
+      const task = await models.task.query().findById(req.params.id).withGraphFetched('labels');
+      const selectedLabels = await models.label
+        .query()
+        .whereIn('id', Array.isArray(labelIds) ? labelIds : [labelIds]);
 
       const preparedData = {
         name,
         description,
         statusId: Number(statusId) || 0,
         executorId: Number(executorId) || null,
+        labels: selectedLabels,
       };
 
+      const transaction = await models.task.startTransaction();
+
       try {
-        await task.$query().patch(preparedData);
+        await models.taskLabel.query(transaction).delete().where('taskId', task.id);
+        await task.$query(transaction).patch(_.omit(preparedData, 'labels'));
+
+        for (const label of preparedData.labels) {
+          await models.taskLabel.query(transaction).insert({ taskId: task.id, labelId: label.id });
+        }
+
+        await transaction.commit();
 
         req.flash('info', i18next.t('flash.tasks.edit.success'));
         reply.redirect(app.reverse('tasks'));
       } catch (error) {
+        await transaction.rollback();
+
         const users = await models.user.query();
         const statuses = await models.taskStatus.query();
+        const labels = await models.label.query();
         const data = {
           task,
           users,
           statuses,
+          labels,
           errors: error.data,
         };
 

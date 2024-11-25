@@ -1,0 +1,9 @@
+extends ../layouts/application.pug
+
+block header 
+  = t('layouts.headers.labels')
+
+block content 
+  a.btn.btn-primary(href= route('newLabel'))= t('layouts.buttons.createLabel')
+  - cols = ['id', 'name', 'createdAt']
+  +table('label', cols, labels)

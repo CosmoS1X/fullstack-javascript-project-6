@@ -1,0 +1,9 @@
+extends ../layouts/application.pug
+
+block header 
+  = t('layouts.headers.editLabel')
+
+block content 
+  +formFor()(action= route('label', { id: label.id }) method='post') 
+    +input(label, 'name', errors)(type='text')
+    +actionButton('patch')(class='btn btn-primary' value= t('layouts.buttons.change'))

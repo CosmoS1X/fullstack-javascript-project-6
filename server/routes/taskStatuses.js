@@ -7,6 +7,6 @@ export default (app) => {
   app.get('/statuses/new', { name: 'newStatus', preValidation: app.authenticate }, controller.renderCreateForm);
   app.get('/statuses/:id/edit', { name: 'editStatus', preValidation: app.authenticate }, controller.renderUpdateForm);
   app.post('/statuses', { preValidation: app.authenticate }, controller.create);
-  app.patch('/statuses/:id', { preValidation: app.authenticate }, controller.update);
+  app.patch('/statuses/:id', { name: 'status', preValidation: app.authenticate }, controller.update);
   app.delete('/statuses/:id', { preValidation: app.authenticate }, controller.delete);
 };

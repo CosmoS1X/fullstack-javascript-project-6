@@ -4,14 +4,8 @@ block header
   = t('layouts.headers.signIn')
 
 block content
-  .row.justify-content-center
-    .col-12.col-md-8
-      .card.shadow-sm
-        .card-body.row.p-5
-          .col-12.col-md-6.d-flex.align-items-center.justify-content-center
-            img.rounded-circle(src='/assets/avatar.jpg')
-          .col-12.col-md-6.mt-3.mt-mb-0
-            +formFor()(action=route('session') method='post')
-              +input(signInForm, 'email', errors)(type="text")
-              +input(signInForm, 'password')(type="password")
-              +submit(signInForm)(value=t('layouts.buttons.login'))
+  +formCard('avatar.jpg')
+    +formFor()(action=route('session') method='post')
+      +input(signInForm, 'email', errors)(type="text")
+      +input(signInForm, 'password')(type="password")
+      +submit(signInForm)(value=t('layouts.buttons.login'))

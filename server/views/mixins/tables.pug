@@ -1,0 +1,33 @@
+mixin table(entityName, cols, rows)
+  .table-responsive
+    table.table.table-borderless.table-striped.mt-5.bg-white&attributes(attributes)
+      thead
+        tr
+          each col in cols
+            th.py-3= t(`entityFields.${col}`)
+          th.py-3= t('layouts.tableFields.actions')
+      tbody
+        each row in rows
+          tr
+            each col in cols
+              if entityName === 'user' && col === 'fullName'
+                td= row[col]()
+              else if entityName === 'task' && col === 'name'
+                td
+                  a(href= route('task', { id: row.id }))= row.name
+              else if entityName === 'task' && col === 'status'
+                td= row[col].name
+              else if entityName === 'task' && col === 'creator'
+                td= row[col].fullName()
+              else if entityName === 'task' && col === 'executor'
+                if !!row[col]
+                  td= row[col].fullName()
+                else
+                  td= ''
+              else
+                td= row[col]
+            td
+              .d-flex.flex-wrap
+                a.btn.btn-primary.me-1(href= route(`edit${_.capitalize(entityName)}`, { id: row.id }))= t('layouts.buttons.change')
+                form(action= route(entityName, { id: row.id }) method='post')
+                  +actionButton('delete')(class='btn btn-danger' value= t('layouts.buttons.delete'))
