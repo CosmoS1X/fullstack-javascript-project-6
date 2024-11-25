@@ -1,5 +1,8 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
+
 import i18next from 'i18next';
-import { transaction } from 'objection';
+import _ from 'lodash';
 
 export default (app) => {
   const { models } = app.objection;
@@ -28,7 +31,8 @@ export default (app) => {
       return reply;
     },
     create: async (req, reply) => {
-      const { name, description, statusId, executorId, labels: labelIds } = req.body.data;
+      const { name, description, statusId, executorId, labels: labelIds = [] } = req.body.data;
+      const selectedLabels = await models.label.query().whereIn('id', [labelIds].flat());
 
       const preparedData = {
         name,
@@ -36,29 +40,30 @@ export default (app) => {
         creatorId: req.session.passport.id,
         statusId: Number(statusId) || 0,
         executorId: Number(executorId) || null,
-        labels: Array.isArray(labelIds) ? labelIds : [labelIds],
+        labels: selectedLabels,
       };
 
       const task = new models.task();
 
       task.$set(preparedData);
 
+      const trx = await models.task.startTransaction();
+
       try {
         const validData = await models.task.fromJson(preparedData);
+        const { id } = await models.task.query(trx).insertAndFetch(validData);
 
-        await transaction(models.task, models.taskLabel, async (trxTask, trxTaskLabel) => {
-          const { id } = await trxTask.query().insertAndFetch(validData);
+        for (const label of preparedData.labels) {
+          await models.taskLabel.query(trx).insert({ taskId: id, labelId: label.id });
+        }
 
-          const promises = preparedData.labels.map(async (labelId) => {
-            await trxTaskLabel.query().insert({ taskId: id, labelId: Number(labelId) });
-          });
-
-          await Promise.all(promises);
-        });
+        await trx.commit();
 
         req.flash('info', i18next.t('flash.tasks.create.success'));
         reply.redirect(app.reverse('tasks'));
       } catch (error) {
+        await trx.rollback();
+
         const users = await models.user.query();
         const statuses = await models.taskStatus.query();
         const labels = await models.label.query();
@@ -107,34 +112,35 @@ export default (app) => {
       return reply;
     },
     update: async (req, reply) => {
-      const { name, description, statusId, executorId, labels: labelIds } = req.body.data;
+      const { name, description, statusId, executorId, labels: labelIds = [] } = req.body.data;
+      const task = await models.task.query().findById(req.params.id).withGraphFetched('labels');
+      const selectedLabels = await models.label.query().whereIn('id', [labelIds].flat());
 
       const preparedData = {
         name,
         description,
         statusId: Number(statusId) || 0,
         executorId: Number(executorId) || null,
-        labels: Array.isArray(labelIds) ? labelIds : [labelIds],
+        labels: selectedLabels,
       };
 
+      const trx = await models.task.startTransaction();
+
       try {
-        await transaction(models.task, models.taskLabel, async (trxTask, trxTaskLabel) => {
-          const task = await trxTask.query().findById(req.params.id);
+        await models.taskLabel.query(trx).delete().where('taskId', task.id);
+        await task.$query(trx).patch(_.omit(preparedData, 'labels'));
 
-          await trxTaskLabel.query().delete().where('taskId', task.id);
-          await task.$query().patch(preparedData);
+        for (const label of preparedData.labels) {
+          await models.taskLabel.query(trx).insert({ taskId: task.id, labelId: label.id });
+        }
 
-          const promises = preparedData.labels.map(async (labelId) => {
-            await trxTaskLabel.query().insert({ taskId: task.id, labelId: Number(labelId) });
-          });
-
-          await Promise.all(promises);
-        });
+        await trx.commit();
 
         req.flash('info', i18next.t('flash.tasks.edit.success'));
         reply.redirect(app.reverse('tasks'));
       } catch (error) {
-        const task = await models.task.query().findById(req.params.id);
+        await trx.rollback();
+
         const users = await models.user.query();
         const statuses = await models.taskStatus.query();
         const labels = await models.label.query();
