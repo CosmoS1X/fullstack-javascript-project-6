@@ -4,6 +4,17 @@ block header
   = t('layouts.headers.tasks')
 
 block content 
-  a.btn.btn-primary(href= route('newTask'))= t('layouts.buttons.createTask')
+  a.btn.btn-primary.mb-5(href= route('newTask'))= t('layouts.buttons.createTask')
+
+  .card.shadow-sm
+    .card-body.p-4
+      +formFor()(action= route('tasks') method='get')
+        .row
+          +filter('status', statuses, queryParams)
+          +filter('executor', users, queryParams)
+          +filter('label', labels, queryParams)
+        +checkbox('isCreatorUser', queryParams, t('layouts.form.checkboxes.myTasks'))
+        +submit()(value= t('layouts.buttons.show'))
+
   - cols = ['id', 'name', 'status', 'creator', 'executor', 'createdAt']
   +table('task', cols, tasks)
