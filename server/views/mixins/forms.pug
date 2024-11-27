@@ -68,6 +68,22 @@ mixin multiSelect(entity, propertyName, selectItems)
       each item in selectItems
         option(value= item.id selected= _.find(entity[propertyName], { id: item.id }))= item.name
 
+mixin filter(propertyName, selectItems, queryParams)
+  - selectId = makeElementId(propertyName)
+  .col-12.col-md
+    .input-group.mb-3
+      label.input-group-text(for= selectId)= t(`layouts.form.selects.${propertyName}`)
+      select.form-select(id= selectId name= propertyName)
+        option
+          each item in selectItems
+            option(value= item.id selected= item.id === Number(queryParams[propertyName]))= item.name || item.fullName()
+
+mixin checkbox(propertyName, queryParams, value)
+  - checkboxId = makeElementId(propertyName)
+  .form-check.mb-3&attributes(attributes)
+    input.form-check-input(type='checkbox' id= checkboxId name= propertyName checked= queryParams.isCreatorUser)
+    label.form-check-label(for= checkboxId)= value
+
 mixin submit(form = null)
   input(class='btn btn-primary' type='submit')&attributes(attributes)
 
