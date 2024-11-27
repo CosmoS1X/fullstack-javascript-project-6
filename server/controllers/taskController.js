@@ -9,14 +9,26 @@ export default (app) => {
 
   return {
     getList: async (req, reply) => {
+      const { status, executor, label, isCreatorUser } = req.query;
+
       const tasks = await models.task
         .query()
-        .withGraphFetched('status')
-        .withGraphFetched('creator')
-        .withGraphFetched('executor')
+        .skipUndefined()
+        .withGraphJoined('status')
+        .withGraphJoined('creator')
+        .withGraphJoined('executor')
+        .withGraphJoined('labels')
+        .where('statusId', status || undefined)
+        .andWhere('executorId', executor || undefined)
+        .andWhere('creatorId', isCreatorUser ? req.session.passport.id : undefined)
+        .andWhere('labelId', label || undefined)
         .orderBy('createdAt', 'desc');
 
-      reply.render('tasks/index', { tasks });
+      const statuses = await models.taskStatus.query();
+      const users = await models.user.query();
+      const labels = await models.label.query();
+
+      reply.render('tasks/index', { tasks, statuses, users, labels, queryParams: req.query });
 
       return reply;
     },
