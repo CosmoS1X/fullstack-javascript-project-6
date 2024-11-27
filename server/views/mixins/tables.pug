@@ -14,7 +14,7 @@ mixin table(entityName, cols, rows)
                 td= row[col]()
               else if entityName === 'task' && col === 'name'
                 td
-                  a(href= route('task', { id: row.id }))= row.name
+                  a.text-decoration-none(href= route('task', { id: row.id }))= row.name
               else if entityName === 'task' && col === 'status'
                 td= row[col].name
               else if entityName === 'task' && col === 'creator'
