@@ -9,19 +9,25 @@ export default (app) => {
 
   return {
     getList: async (req, reply) => {
-      const { status, executor, label, isCreatorUser } = req.query;
+      const filters = Object.entries(req.query).reduce((acc, [key, value]) => {
+        if (!value) {
+          return acc;
+        }
+
+        if (key === 'isCreatorUser') {
+          return { ...acc, creatorId: req.session.passport.id };
+        }
+
+        return { ...acc, [`${key}Id`]: value };
+      }, {});
 
       const tasks = await models.task
         .query()
-        .skipUndefined()
+        .where(filters)
         .withGraphJoined('status')
         .withGraphJoined('creator')
         .withGraphJoined('executor')
         .withGraphJoined('labels')
-        .where('statusId', status || undefined)
-        .andWhere('executorId', executor || undefined)
-        .andWhere('creatorId', isCreatorUser ? req.session.passport.id : undefined)
-        .andWhere('labelId', label || undefined)
         .orderBy('createdAt', 'desc');
 
       const statuses = await models.taskStatus.query();
