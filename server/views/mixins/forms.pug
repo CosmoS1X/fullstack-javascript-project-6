@@ -75,8 +75,8 @@ mixin filter(propertyName, selectItems, queryParams)
       label.input-group-text(for= selectId)= t(`layouts.form.selects.${propertyName}`)
       select.form-select(id= selectId name= propertyName)
         option
-          each item in selectItems
-            option(value= item.id selected= item.id === Number(queryParams[propertyName]))= item.name || item.fullName()
+        each item in selectItems
+          option(value= item.id selected= item.id === Number(queryParams[propertyName]))= item.name || item.fullName()
 
 mixin checkbox(propertyName, queryParams, value)
   - checkboxId = makeElementId(propertyName)
