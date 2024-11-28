@@ -64,15 +64,20 @@ const createTask = () => ({
   name: faker.lorem.word(),
   description: faker.lorem.text(),
   statusId: faker.number.int({ min: 1, max: 5 }),
+  creatorId: faker.number.int({ min: 1, max: 5 }),
   executorId: faker.number.int({ min: 1, max: 5 }),
 });
 
 const tasksTestData = {
-  new: createTask(),
+  new: _.omit(createTask(), 'creatorId'),
   existing: { ...createTask(), creatorId: 1 },
 };
 
-const getTasksModelData = () => [tasksTestData.existing];
+const getTasksModelData = () => {
+  const tasks = faker.helpers.multiple(createTask, { count: 4 });
+
+  return [...tasks, tasksTestData.existing];
+};
 
 const usersModelData = getUsersModelData();
 const statusesModelData = getStatusesModelData();
