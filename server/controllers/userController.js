@@ -29,7 +29,7 @@ export default (app) => {
 
         await models.user.query().insert(validData);
 
-        req.flash('success', i18next.t('flash.users.create.success'));
+        req.flash('info', i18next.t('flash.users.create.success'));
         reply.redirect(app.reverse('root'));
       } catch (error) {
         req.flash('error', i18next.t('flash.users.create.error'));
@@ -56,7 +56,7 @@ export default (app) => {
       try {
         await user.$query().patch(req.body.data);
 
-        req.flash('success', i18next.t('flash.users.edit.success'));
+        req.flash('info', i18next.t('flash.users.edit.success'));
         reply.redirect(app.reverse('users'));
       } catch (error) {
         req.flash('error', i18next.t('flash.users.edit.error'));
@@ -79,7 +79,7 @@ export default (app) => {
         await models.user.query().deleteById(req.params.id);
 
         req.logOut();
-        req.flash('success', i18next.t('flash.users.delete.success'));
+        req.flash('info', i18next.t('flash.users.delete.success'));
         reply.redirect(app.reverse('users'));
       } catch (error) {
         req.flash('error', i18next.t('flash.users.delete.error'));
