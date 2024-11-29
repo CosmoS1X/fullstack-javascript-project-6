@@ -9,14 +9,32 @@ export default (app) => {
 
   return {
     getList: async (req, reply) => {
+      const filters = Object.entries(req.query).reduce((acc, [key, value]) => {
+        if (!value) {
+          return acc;
+        }
+
+        if (key === 'isCreatorUser') {
+          return { ...acc, creatorId: req.session.passport.id };
+        }
+
+        return { ...acc, [`${key}Id`]: value };
+      }, {});
+
       const tasks = await models.task
         .query()
-        .withGraphFetched('status')
-        .withGraphFetched('creator')
-        .withGraphFetched('executor')
+        .where(filters)
+        .withGraphJoined('status')
+        .withGraphJoined('creator')
+        .withGraphJoined('executor')
+        .withGraphJoined('labels')
         .orderBy('createdAt', 'desc');
 
-      reply.render('tasks/index', { tasks });
+      const statuses = await models.taskStatus.query();
+      const users = await models.user.query();
+      const labels = await models.label.query();
+
+      reply.render('tasks/index', { tasks, statuses, users, labels, queryParams: req.query });
 
       return reply;
     },

@@ -102,6 +102,7 @@ export default {
         change: 'Изменить',
         delete: 'Удалить',
         create: 'Создать',
+        show: 'Показать',
         createStatus: 'Создать статус',
         createTask: 'Создать задачу',
         createLabel: 'Создать метку',
@@ -123,11 +124,15 @@ export default {
         selects: {
           status: 'Статус',
           executor: 'Исполнитель',
+          label: 'Метка',
+          labels: 'Метки',
           defaults: {
             status: '-- Выберите статус --',
             executor: '-- Выберите исполнителя --',
           },
-          labels: 'Метки',
+        },
+        checkboxes: {
+          myTasks: 'Только мои задачи',
         },
       },
     },

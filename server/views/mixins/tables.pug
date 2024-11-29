@@ -10,22 +10,24 @@ mixin table(entityName, cols, rows)
         each row in rows
           tr
             each col in cols
-              if entityName === 'user' && col === 'fullName'
-                td= row[col]()
-              else if entityName === 'task' && col === 'name'
-                td
-                  a(href= route('task', { id: row.id }))= row.name
-              else if entityName === 'task' && col === 'status'
-                td= row[col].name
-              else if entityName === 'task' && col === 'creator'
-                td= row[col].fullName()
-              else if entityName === 'task' && col === 'executor'
-                if !!row[col]
-                  td= row[col].fullName()
-                else
-                  td= ''
-              else
-                td= row[col]
+              case col
+                when 'fullName'
+                  td= row[col]()
+                when 'status'
+                  td= row[col].name
+                when 'creator'
+                when 'executor'
+                  td= !!row[col] ? row[col].fullName() : ''
+                when 'createdAt'
+                  td= formatDate(row[col])
+                when 'name'
+                  if entityName === 'task'
+                    td
+                      a.text-decoration-none(href= route('task', { id: row.id }))= row.name
+                  else
+                    td= row[col]
+                default
+                  td= row[col]
             td
               .d-flex.flex-wrap
                 a.btn.btn-primary.me-1(href= route(`edit${_.capitalize(entityName)}`, { id: row.id }))= t('layouts.buttons.change')

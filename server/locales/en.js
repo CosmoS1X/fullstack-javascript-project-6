@@ -102,6 +102,7 @@ export default {
         change: 'Change',
         delete: 'Delete',
         create: 'Create',
+        show: 'Show',
         createStatus: 'Create status',
         createTask: 'Create task',
         createLabel: 'Create label',
@@ -123,11 +124,15 @@ export default {
         selects: {
           status: 'Status',
           executor: 'Executor',
+          label: 'Label',
+          labels: 'Labels',
           defaults: {
             status: '-- Select status --',
             executor: '-- Select executor --',
           },
-          labels: 'Labels',
+        },
+        checkboxes: {
+          myTasks: 'My tasks only',
         },
       },
     },
