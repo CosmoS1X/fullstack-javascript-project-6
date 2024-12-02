@@ -23,7 +23,7 @@ block content
           span= ''
       .d-flex.flex-wrap.mb-3
         span.text-muted.me-2= t('entityFields.createdAt')
-        span= task.createdAt
+        span= formatDate(task.createdAt)
       .d-flex.flex-wrap
         a.btn.btn-primary.me-1(href= route('editTask', { id: task.id }))= t('layouts.buttons.change')
         form(action= route('task', { id: task.id }), method="post")
