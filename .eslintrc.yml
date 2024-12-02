@@ -11,7 +11,6 @@ parserOptions:
 rules:
   no-console: off
   import/extensions: off
-  object-curly-newline: off
   no-underscore-dangle:
     - error
     - allow:
