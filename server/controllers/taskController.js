@@ -34,7 +34,13 @@ export default (app) => {
       const users = await models.user.query();
       const labels = await models.label.query();
 
-      reply.render('tasks/index', { tasks, statuses, users, labels, queryParams: req.query });
+      reply.render('tasks/index', {
+        tasks,
+        statuses,
+        users,
+        labels,
+        queryParams: req.query,
+      });
 
       return reply;
     },
@@ -44,12 +50,23 @@ export default (app) => {
       const statuses = await models.taskStatus.query();
       const labels = await models.label.query();
 
-      reply.render('tasks/new', { task, users, statuses, labels });
+      reply.render('tasks/new', {
+        task,
+        users,
+        statuses,
+        labels,
+      });
 
       return reply;
     },
     create: async (req, reply) => {
-      const { name, description, statusId, executorId, labels: labelIds = [] } = req.body.data;
+      const {
+        name,
+        description,
+        statusId,
+        executorId,
+        labels: labelIds = [],
+      } = req.body.data;
       const selectedLabels = await models.label
         .query()
         .whereIn('id', Array.isArray(labelIds) ? labelIds : [labelIds]);
@@ -127,12 +144,23 @@ export default (app) => {
       const statuses = await models.taskStatus.query();
       const labels = await models.label.query();
 
-      reply.render('tasks/edit', { task, users, statuses, labels });
+      reply.render('tasks/edit', {
+        task,
+        users,
+        statuses,
+        labels,
+      });
 
       return reply;
     },
     update: async (req, reply) => {
-      const { name, description, statusId, executorId, labels: labelIds = [] } = req.body.data;
+      const {
+        name,
+        description,
+        statusId,
+        executorId,
+        labels: labelIds = [],
+      } = req.body.data;
       const task = await models.task.query().findById(req.params.id).withGraphFetched('labels');
       const selectedLabels = await models.label
         .query()
